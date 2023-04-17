@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname,'./client/build')));
 app.get('/',function(req,res){
   res.sendFile(path.join(__dirname,'./client/build/index.html'));
 })
-
+// 수정완료
 
 //항상 가장 하단에 위치해야하는 코드
 app.get('*',function(req,res){
