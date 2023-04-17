@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -17,17 +18,15 @@ export default function SignUp() {
 
   const [notAllow, setNotAllow] = useState(true);
 
-  //자세한 인증이나, regex는 api테스트하려고 잠시 주석처리했습니다
-
   const handleName = (e) => {
-    // const regexName = /^[ㄱ-ㅎ가-힣a-z0-9-_]{4,10}$/;
+    const regexName = /^[ㄱ-ㅎ가-힣a-z0-9-_]{4,10}$/;
     setName(e.target.value);
     //닉네임은 특수문자를 제외한 4~10자리
-    // if (regexName.test(name)) {
-    //   setNameValid(true);
-    // } else {
-    //   setNameValid(false);
-    // }
+    if (regexName.test(name)) {
+      setNameValid(true);
+    } else {
+      setNameValid(false);
+    }
   };
 
   const handleId = (e) => {
@@ -63,11 +62,6 @@ export default function SignUp() {
     // }
   };
 
-  // useEffect(() => {
-  //   if (idValid && pwdValid && nameValid && emailValid) {
-  //   }
-  // });
-
   const register = () => {
     axios
       .post("http://localhost:5000/auth/sign-up", {
@@ -85,6 +79,14 @@ export default function SignUp() {
         console.log("An error occurred:", error.response);
       });
   };
+
+  useEffect(() => {
+    if (idValid && nameValid && emailValid) {
+      setNotAllow(false);
+      return;
+    }
+    setNotAllow(true);
+  }, [idValid, nameValid, emailValid]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -174,7 +176,7 @@ const InputFieldWrapper = styled.div`
 `;
 
 const TitleBox = styled.div`
-  color: black;
+  color: white;
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
