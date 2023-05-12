@@ -10,8 +10,8 @@ const userSchema = new Schema({
     id: { type: String },
     pw: { type: String },
     email: { type: String },
-    token: { type: String }
-
+    token: { type: String },
+    emailVerified: { type: String, default:false }
 }, {
     timestamps: true
 });

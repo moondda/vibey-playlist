@@ -33,10 +33,13 @@ app.use(cors());
 
 // app.use('/user',user);
 app.post('/auth/sign-up', signupRouter);
+app.post('/valid/email/confirm/:token', signupRouter);
 app.post('/auth/login', async (req, res) => {
   try {
     const userInfo = await User.findOne({ id: req.body.id });
     console.log(req.body.id);
+
+    // 아이디 검증
     if (!userInfo) {
       return res.json({
         loginSuccess: false,
@@ -44,15 +47,22 @@ app.post('/auth/login', async (req, res) => {
       });
     }
 
+    // 비밀번호 검증
     const isMatch = await userInfo.comparePassword(req.body.pw);
     if (!isMatch) {
       return res.json({ loginSuccess: false, messsage: "비밀번호가 틀렸습니다." });
     }
 
+    // 이메일 인증 여부 검증
+    if (!userInfo.emailVerified) {
+      return res.json({ message: '이메일 인증을 완료해주십시오.' });
+    }
+
     const user = await userInfo.generateToken();
     res.cookie("x_auth", user.token)
       .status(200)
-      .json({ loginSuccess: true, userId: user._id });
+      .json({ loginSuccess: true, userId: user._id, message: '로그인 완료' });
+
   } catch (err) {
     return res.status(400).send(err);
   }
@@ -68,3 +78,5 @@ app.get('/', function (req, res) {
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 })
+
+module.exports = app; // app을 export합니다.
