@@ -3,6 +3,7 @@ import Profile from "./Profile";
 import Descript from "./Descript";
 import styled from "styled-components";
 import Title from "../../components/Title";
+import FootBar from "../../components/footer/FootBar";
 
 export default function ProfilePage() {
   return (
@@ -10,7 +11,7 @@ export default function ProfilePage() {
       <Title title="프로필" />
       <Descript />
       <Profile />
-      {/* <FootBar /> */}
+      <FootBar />
     </div>
   );
 }

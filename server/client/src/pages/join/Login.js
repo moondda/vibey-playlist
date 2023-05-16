@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../../assets/0417.png";
+import logo from "../../assets/logo_vibey.png";
 
 export default function Login() {
   return (
     <div className="login_box">
       <img src={logo} style={{ width: "150px", marginBottom: "40px" }}></img>
-      <div>
+
+      <div style={{}}>
         <InputBox className="user_login" placeholder="username"></InputBox>
 
         <InputBox className="user_password" placeholder="password"></InputBox>
@@ -29,6 +30,9 @@ const InputBox = styled.input`
   margin-bottom: 10px;
   padding-left: 20px;
   /* background-color: #700fff; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
 `;
 
 const ButtonBox = styled.div`

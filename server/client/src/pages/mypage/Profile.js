@@ -26,8 +26,8 @@ export default function Profile() {
 }
 
 const GridBox = styled.div`
-  /* border: 3px solid red; */
-  width: 360px;
+  /* width: 360px; */
+
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -36,8 +36,7 @@ const GridBox = styled.div`
   /* justify-content: center; */
   /* align-items: center; */
   gap: 10px;
-
-  /* margin: 10px; */
+  margin: 10px;
 `;
 
 const Item = styled.div`
