@@ -84,4 +84,5 @@ const FollowText = styled.div`
   /* border: 1px solid green; */
   color: #eee;
   text-align: center;
+  align-items: center;
 `;

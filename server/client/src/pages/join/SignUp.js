@@ -33,6 +33,50 @@ export default function SignUp() {
     setId(e.target.value);
   };
 
+  const checkId = (e) => {
+    axios
+      .post("http://localhost:5000/valid/accountName/exists", {
+        accountName: id,
+      })
+      .then((res) => {
+        console.log("res.data:", res.data);
+        if (res.data.result == true) {
+          console.log("중복된 아이디 존재");
+          alert("중복된 아이디가 존재합니다.");
+          setIdValid(false);
+        } else {
+          console.log("사용 가능한 아이디");
+          alert("사용 가능한 아이디입니다.");
+          setIdValid(true);
+        }
+      })
+      .catch((err) => {
+        console.log("중복확인 실패: ", err);
+      });
+  };
+
+  const checkNickname = (e) => {
+    axios
+      .post("http://localhost:5000/valid/nickname/exists", {
+        nickname: name,
+      })
+      .then((res) => {
+        console.log("res.data :", res.data);
+        if (res.data.result == true) {
+          console.log("중복된 닉네임이 존재합니다");
+          alert("중복된 닉네임이 존재합니다.");
+          setNameValid(false);
+        } else {
+          console.log("사용 가능한 닉네임");
+          alert("사용 가능한 닉네임입니다.");
+          setNameValid(true);
+        }
+      })
+      .catch((err) => {
+        console.log("중복확인 실패:", err);
+      });
+  };
+
   const handlePwd = (e) => {
     //최소 8자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
     // const regexPwd =
@@ -89,17 +133,17 @@ export default function SignUp() {
   }, [idValid, nameValid, emailValid]);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", height: "100%", margin: ") auto" }}>
       <TitleBox>Sign Up</TitleBox>
       <InputFieldWrapper>
         <p style={{ color: "white", textAlign: "left" }}>nickname</p>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <InputField
             placeholder="이름을 입력해주세요"
             value={name}
             onChange={handleName}
           ></InputField>
-          <ConfirmBox>Confirm</ConfirmBox>
+          <ConfirmBox onClick={checkNickname}>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -124,6 +168,7 @@ export default function SignUp() {
             onChange={handlePwd}
             type="password"
           ></InputField>
+          <ConfirmBox style={{ backgroundColor: "#5e5e5e" }}></ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -136,6 +181,7 @@ export default function SignUp() {
             onChange={handleConfigPwd}
             type="password"
           ></InputField>
+          <ConfirmBox>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -159,7 +205,7 @@ export default function SignUp() {
 const InputField = styled.input`
   height: 50px;
   border: none;
-  width: 62%;
+  width: 70%;
   border-radius: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -180,6 +226,7 @@ const TitleBox = styled.div`
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
+  margin-top: 50px;
 `;
 
 const ButtonBox = styled.div`
@@ -198,7 +245,7 @@ const ButtonBox = styled.div`
 const ConfirmBox = styled.div`
   background-color: #841bc5;
   font-size: 0.8rem;
-  width: 22%;
+  width: 30%;
   height: 50px;
   margin-left: 10px;
   border-radius: 10px;
