@@ -5,7 +5,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const signupRouter = require('./routes/signupRouter');
+const authRouter = require('./routes/authRouter');
+const validRouter = require('./routes/validRouter');
 const User = require('./models/User');
 
 require('dotenv').config({ path: 'variables.env' });
@@ -32,41 +33,8 @@ app.use(express.json());
 app.use(cors());
 
 // app.use('/user',user);
-app.post('/auth/sign-up', signupRouter);
-app.post('/valid/email/confirm/:token', signupRouter);
-app.post('/auth/login', async (req, res) => {
-  try {
-    const userInfo = await User.findOne({ id: req.body.id });
-    console.log(req.body.id);
-
-    // 아이디 검증
-    if (!userInfo) {
-      return res.json({
-        loginSuccess: false,
-        messsage: "아이디에 해당하는 유저가 없습니다."
-      });
-    }
-
-    // 비밀번호 검증
-    const isMatch = await userInfo.comparePassword(req.body.pw);
-    if (!isMatch) {
-      return res.json({ loginSuccess: false, messsage: "비밀번호가 틀렸습니다." });
-    }
-
-    // 이메일 인증 여부 검증
-    if (!userInfo.emailVerified) {
-      return res.json({ message: '이메일 인증을 완료해주십시오.' });
-    }
-
-    const user = await userInfo.generateToken();
-    res.cookie("x_auth", user.token)
-      .status(200)
-      .json({ loginSuccess: true, userId: user._id, message: '로그인 완료' });
-
-  } catch (err) {
-    return res.status(400).send(err);
-  }
-});
+app.use('/auth', authRouter);
+app.use('/valid', validRouter);
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('/', function (req, res) {

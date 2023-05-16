@@ -18,19 +18,19 @@ module.exports = {
       throw Error('비밀번호가 안전하지 않습니다.');
     }
 
-    const existingEmail = await User.findOne({ email });
-    const existingId = await User.findOne({ id });
-    const existingNickname = await User.findOne({ nickname });
+    // const existingEmail = await User.findOne({ email });
+    // const existingId = await User.findOne({ id });
+    // const existingNickname = await User.findOne({ nickname });
 
-    if (existingEmail) {
-      throw Error('이미 존재하는 이메일입니다.');
-    }
-    if (existingId) {
-      throw Error('이미 존재하는 아이디입니다.');
-    }
-    if (existingNickname) {
-      throw Error('이미 존재하는 닉네임입니다.');
-    }
+    // if (existingEmail) {
+    //   throw Error('이미 존재하는 이메일입니다.');
+    // }
+    // if (existingId) {
+    //   throw Error('이미 존재하는 아이디입니다.');
+    // }
+    // if (existingNickname) {
+    //   throw Error('이미 존재하는 닉네임입니다.');
+    // }
 
     // 유저 생성
     const user = new User({
@@ -57,18 +57,37 @@ module.exports = {
     res.status(200).send({ message: "회원가입 인증 메일을 전송했습니다." })
   },
 
-  trueToken: async (req, res) => {
+  login: async (req, res) => {
     try {
-      console.log("라우팅 잘 됨");
-      const token = await Token.findOne({
-        token: req.params.token,
-      });
-      console.log(token);
-      await User.updateOne({ _id: token.userId }, { $set: { emailVerified: true } });
-      await Token.findByIdAndRemove(token._id);
-      res.send("이메일이 인증되었습니다.");
-    } catch (error) {
-      res.status(400).send("에러가 발생하였습니다.")
+      const userInfo = await User.findOne({ id: req.body.id });
+      console.log(req.body.id);
+  
+      // 아이디 검증
+      if (!userInfo) {
+        return res.json({
+          loginSuccess: false,
+          messsage: "아이디에 해당하는 유저가 없습니다."
+        });
+      }
+  
+      // 비밀번호 검증
+      const isMatch = await userInfo.comparePassword(req.body.pw);
+      if (!isMatch) {
+        return res.json({ loginSuccess: false, messsage: "비밀번호가 틀렸습니다." });
+      }
+  
+      // 이메일 인증 여부 검증
+      // if (!userInfo.emailVerified) {
+      //   return res.json({ message: '이메일 인증을 완료해주십시오.' });
+      // }
+  
+      const user = await userInfo.generateToken();
+      res.cookie("x_auth", user.token)
+        .status(200)
+        .json({ loginSuccess: true, userId: user._id, message: '로그인 완료' });
+  
+    } catch (err) {
+      return res.status(400).send(err);
     }
   }
 }
