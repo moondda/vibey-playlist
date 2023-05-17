@@ -26,7 +26,7 @@ const NotiBox = (props) => {
   return (
     <NotiDiv opacity={`${opacity}%`}>
       <NotificationBox>{props.noti}</NotificationBox>
-      <button onClick={() => onClose(false)}>확인</button>
+      <button onClick={() => onClose(false)}>확인버튼</button>
     </NotiDiv>
   );
 };
