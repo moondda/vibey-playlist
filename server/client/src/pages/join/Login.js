@@ -7,7 +7,7 @@ export default function Login() {
     <div className="login_box">
       <img src={logo} style={{ width: "150px", marginBottom: "40px" }}></img>
 
-      <div style={{}}>
+      <div>
         <InputBox className="user_login" placeholder="username"></InputBox>
 
         <InputBox className="user_password" placeholder="password"></InputBox>
