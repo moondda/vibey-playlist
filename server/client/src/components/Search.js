@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchBar() {
+
+  const [searchResult, setSearchResult]=useState("");
   return (
     <Container>
-      <SearchInput placeholder="surf your wave!" />
+      <SearchInput placeholder="surf your wave!" value={searchResult} />
       <div
         style={{
           position: "absolute",
