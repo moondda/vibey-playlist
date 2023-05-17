@@ -71,17 +71,41 @@ module.exports = {
         }
     },
 
-    trueToken: async (req, res) => {
+    confirm: async (req, res) => {
         try {
           const token = await Token.findOne({
             token: req.params.token,
           });
-          console.log(token);
-          await User.updateOne({ _id: token.userId }, { $set: { emailVerified: true } });
-          await Token.findByIdAndRemove(token._id);
-          res.send("이메일이 인증되었습니다.");
+            console.log(token);
+            await User.updateOne({ _id: token.userId }, { $set: { emailVerified: true } });
+            await Token.findByIdAndRemove(token._id);
+            res.send("이메일이 인증되었습니다.");
         } catch (error) {
-          res.status(400).send("에러가 발생하였습니다.")
+            res.status(400).send("에러가 발생하였습니다.")
         }
-      },
+    },
+
+    check: async (req, res) => {
+        try {
+            const userInfo = await User.findOne({ email: req.body.email });
+            if (req.body.email === ""){
+                return res.json({ result: false, message: "이메일은 필수 입력 사항입니다." });
+            }
+            if (userInfo.emailVerified){
+                return res.json({ result: true, message: "인증된 이메일입니다." });
+            } else {
+                return res.json({ result: false, message: "인증되지 않은 이메일입니다."});
+            }
+        } catch (error) {
+            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included"});
+        }
+    },
+
+    send: async (req, res) => {
+        try {
+            
+        } catch (error) {
+            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included"});
+        }
+    },
 };
