@@ -9,13 +9,13 @@ module.exports = {
     const { name, nickname, id, pw, email, token } = req.body;
 
     if (!name || !nickname || !id || !pw || !email) {
-      throw Error('모든 항목을 입력해주세요.');
+      return res.json({message: '모든 항목을 입력해주세요.' });
     }
     if (!validator.isEmail(email)) {
-      throw Error('유효하지 않은 이메일입니다.');
+      return res.json({message: '유효하지 않은 이메일입니다.' });
     }
     if (!validator.isStrongPassword(pw)) {
-      throw Error('비밀번호가 안전하지 않습니다.');
+      return res.json({message: "비밀번호가 안전하지 않습니다." });
     }
 
     // 유저 생성
