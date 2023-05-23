@@ -25,15 +25,15 @@ async function searchSong(artist) {
       });
     });
 
-   // const songs = jsonData.rss.channel[0].item[2]['maniadb:majorsongs'][0];
-   const songs = jsonData.rss.channel[0].item;
-songs.forEach((item) => {
-  const allSong = item['maniadb:majorsongs'][0];
-  const everySong = allSong.song;
-  everySong.forEach((song) => {
-    console.log(JSON.stringify(song.name));
-  });
-});
+    // const songs = jsonData.rss.channel[0].item[2]['maniadb:majorsongs'][0];
+    const songs = jsonData.rss.channel[0].item;
+    songs.forEach((item) => {
+      const allSong = item['maniadb:majorsongs'][0];
+      const everySong = allSong.song;
+      everySong.forEach((song) => {
+        console.log(JSON.stringify(song.name));
+      });
+    });
 
   } catch (error) {
     console.error('Error:', error);
