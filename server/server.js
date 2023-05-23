@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/signupRouter');
 const validRouter = require('./routes/validRouter');
+const settingRouter = require('./routes/settingRouter');
 const User = require('./models/User');
 
 require('dotenv').config({ path: 'variables.env' });
@@ -35,6 +36,7 @@ app.use(cors());
 // app.use('/user',user);
 app.use('/auth', authRouter);
 app.use('/valid', validRouter);
+app.use('/setting', settingRouter);
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('/', function (req, res) {
