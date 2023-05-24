@@ -9,7 +9,11 @@ const tokenSchema = new Schema ({
     token: {
         type : String,
         required: true,
-    }
+    },
+    emailVerified: {
+        type: Boolean, 
+        default: false
+    },
 });
 const Token = mongoose.model("token", tokenSchema);
 module.exports = Token;

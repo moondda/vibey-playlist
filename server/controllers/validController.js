@@ -79,8 +79,8 @@ module.exports = {
             token: req.params.token,
           });
             console.log(token);
-            await User.updateOne({ email: token.email }, { $set: { emailVerified: true } });
-            await Token.findByIdAndRemove(token.email);
+            await Token.updateOne({ email: token.email }, { $set: { emailVerified: true } });
+            // await Token.findByIdAndRemove(token.email);
             res.send("이메일이 인증되었습니다.");
         } catch (error) {
             res.status(400).send("에러가 발생하였습니다.")

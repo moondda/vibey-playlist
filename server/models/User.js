@@ -11,7 +11,6 @@ const userSchema = new Schema({
     pw: { type: String },
     email: { type: String },
     token: { type: String },
-    emailVerified: { type: Boolean, default:false },
     bio: { type: String }
 }, {
     timestamps: true
