@@ -1,6 +1,6 @@
 const User = require('../models/User');
+const Token = require("../models/Token");
 const validator = require('validator');
-
 
 module.exports = {
   signup: async (req, res) => {
@@ -16,10 +16,11 @@ module.exports = {
       return res.json({ message: "비밀번호가 안전하지 않습니다." });
     }
 
-    const userInfo = await User.findOne({ id: req.body.id });
+    const userInfo = await Token.findOne({ email: req.body.email });
+    console.log(userInfo)
 
     // 이메일 인증 여부 검증
-    if (userInfo.emailVerified) {
+    if (userInfo && userInfo.emailVerified) {
 
       // 유저 생성
       const user = new User({
@@ -31,10 +32,12 @@ module.exports = {
       });
 
       // 유저 저장
-      await user.save();
+      await user.save()
+
+      return res.json({ result: true, message: "회원가입이 완료되었습니다." })
     }
     else {
-      return res.json({ message: '이메일 인증을 완료해주십시오.' });
+      return res.json({ result: false, message: "이메일 인증을 완료해주십시오." });
     }
   },
 
