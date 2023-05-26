@@ -89,7 +89,7 @@ module.exports = {
 
     check: async (req, res) => {
         try {
-            const userInfo = await User.findOne({ email: req.body.email });
+            const userInfo = await Token.findOne({ email: req.body.email });
             if (req.body.email === ""){
                 return res.json({ result: false, message: "이메일은 필수 입력 사항입니다." });
             }
