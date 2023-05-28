@@ -55,27 +55,27 @@ export default function SignUp() {
       });
   };
 
-  const checkEmail = (e) => {
-    axios
-      .post("http://localhost:5000/valid/exists/email", {
-        email: email,
-      })
-      .then((res) => {
-        console.log("res.data:", res.data);
-        if (res.data.result == true) {
-          console.log("이메일 인증 완료");
-          alert("인증완료");
-          setEmailValid(true);
-        } else {
-          console.log("실패");
-          alert(res.data.message);
-          setEmailValid(false);
-        }
-      })
-      .catch((err) => {
-        console.log("에러:", err);
-      });
-  };
+  // const checkEmail = (e) => {
+  //   axios
+  //     .post("http://localhost:5000/valid/exists/email", {
+  //       email: email,
+  //     })
+  //     .then((res) => {
+  //       console.log("res.data:", res.data);
+  //       if (res.data.result == true) {
+  //         console.log("이메일 인증 완료");
+  //         alert("인증완료");
+  //         setEmailValid(true);
+  //       } else {
+  //         console.log("실패");
+  //         alert(res.data.message);
+  //         setEmailValid(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("에러:", err);
+  //     });
+  // };
 
   const checkNickname = (e) => {
     axios
@@ -133,13 +133,52 @@ export default function SignUp() {
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    // const regexEmail =
-    //   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    // if (regexEmail.test(email)) {
-    //   setEmailValid(true);
-    // } else {
-    //   setEmailValid(false);
-    // }
+    const regexEmail =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (regexEmail.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  const sendEmail = (e) => {
+    axios
+      .post("http://localhost:5000/valid/email/send", {
+        email: email,
+      })
+      .then((res) => {
+        if (res.data.result == false) {
+          alert(res.data.message);
+        } else {
+          console.log("이메일 인증 메일이 전송되었습니다.");
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  };
+
+  const configEmail = (e) => {
+    axios
+      .post("http://localhost:5000/valid/email/check", {
+        email: email,
+      })
+      .then((res) => {
+        if (res.data.result == true) {
+          console.log("인증 완료");
+          alert(res.data.message);
+          setEmailValid(true);
+        } else {
+          console.log(res.data.message);
+          console.log("인증 실패");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setEmailValid(false);
+      });
   };
 
   const register = () => {
@@ -233,7 +272,8 @@ export default function SignUp() {
             value={email}
             onChange={handleEmail}
           ></InputField>
-          <ConfirmBox onClick={checkEmail}>Confirm</ConfirmBox>
+          <ConfirmBox onClick={sendEmail}>Send</ConfirmBox>
+          <ConfirmBox onClick={configEmail}>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 
