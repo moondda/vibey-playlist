@@ -29,7 +29,7 @@ export default function FootBar() {
         <AccountCircleIcon style={{ color: "white" }} />
       </Link>
 
-      <Link to="/">
+      <Link to="/settings">
         {" "}
         <SettingsIcon style={{ color: "white" }} />
       </Link>

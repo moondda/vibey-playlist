@@ -8,6 +8,9 @@ import SignUpPage from "../pages/join/SignUpPage";
 import ProfilePage from "../pages/mypage/ProfilePage";
 import HomePage from "../pages/home/HomePage";
 import TodayMusicPage from "../pages/recommend/TodayMusicPage";
+import SettingPage from "../pages/settings/SettingPage";
+import ProfileEditPage from "../pages/settings/ProfileEditPage";
+import PwdEditPage from "../pages/settings/PwdEditPage";
 
 export default function RootRoute() {
   return (
@@ -19,6 +22,9 @@ export default function RootRoute() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/today-music" element={<TodayMusicPage />} />
+        <Route path="/settings" element={<SettingPage />} />
+        <Route path="/settings/profile-edit" element={<ProfileEditPage />} />
+        <Route path="/settings/password-edit" element={<PwdEditPage />} />
       </Routes>
     </BrowserRouter>
   );
