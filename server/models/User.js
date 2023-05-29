@@ -12,6 +12,7 @@ const userSchema = new Schema({
     email: { type: String },
     token: { type: String },
     bio: { type: String }, 
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
 },{
     timestamps: true
 
