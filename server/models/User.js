@@ -11,14 +11,10 @@ const userSchema = new Schema({
     pw: { type: String },
     email: { type: String },
     token: { type: String },
-<<<<<<< HEAD
-    emailVerified: { type: Boolean, default:false },
-    // posts: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
-=======
-    bio: { type: String }
->>>>>>> c89c136c3a0d3528e4f2768625a80a7cd3858368
-}, {
+    bio: { type: String }, 
+},{
     timestamps: true
+
 });
 
 userSchema.pre('save', function (next) {

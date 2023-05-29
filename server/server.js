@@ -7,11 +7,8 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/signupRouter');
 const validRouter = require('./routes/validRouter');
-<<<<<<< HEAD
 const songRouter = require('./routes/songRouter');
-=======
 const settingRouter = require('./routes/settingRouter');
->>>>>>> c89c136c3a0d3528e4f2768625a80a7cd3858368
 const User = require('./models/User');
 
 require('dotenv').config({ path: 'variables.env' });
@@ -40,11 +37,8 @@ app.use(cors());
 // app.use('/user',user);
 app.use('/auth', authRouter);
 app.use('/valid', validRouter);
-<<<<<<< HEAD
 app.use('/song', songRouter);
-=======
 app.use('/setting', settingRouter);
->>>>>>> c89c136c3a0d3528e4f2768625a80a7cd3858368
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('/', function (req, res) {
