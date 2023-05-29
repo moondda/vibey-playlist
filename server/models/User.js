@@ -11,8 +11,12 @@ const userSchema = new Schema({
     pw: { type: String },
     email: { type: String },
     token: { type: String },
+<<<<<<< HEAD
     emailVerified: { type: Boolean, default:false },
     // posts: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
+=======
+    bio: { type: String }
+>>>>>>> c89c136c3a0d3528e4f2768625a80a7cd3858368
 }, {
     timestamps: true
 });
@@ -48,14 +52,37 @@ userSchema.methods.comparePassword = function (plainPassword) {
 userSchema.methods.generateToken = async function () {
     const user = this;
     const token = jwt.sign(user._id.toHexString(), 'secretToken');
-  
+
     user.token = token;
     try {
-      await user.save();
-      return user;
+        await user.save();
+        return user;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
+
+userSchema.statics.findByToken = function (token) {
+    var user = this;
+
+    // 비동기 작업에 따라 해결(resolve)하거나 거부(reject)하는 프라미스를 반환합니다.
+    return new Promise((resolve, reject) => {
+        // 토큰을 검증합니다.
+        jwt.verify(token, "secretToken", function (err, decoded) {
+            if (err) {
+                return reject(err);
+            }
+
+            // 디코딩된 ID와 토큰을 사용하여 사용자를 찾습니다.
+            user.findOne({ "_id": decoded, "token": token })
+                .then(user => {
+                    resolve(user);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    });
+};
 
 module.exports = mongoose.model('User', userSchema, 'users');

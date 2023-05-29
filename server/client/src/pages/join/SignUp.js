@@ -35,19 +35,19 @@ export default function SignUp() {
 
   const checkId = (e) => {
     axios
-      .post("http://localhost:5000/valid/accountName/exists", {
-        accountName: id,
+      .post("http://localhost:5000/valid/exists/id", {
+        id: id,
       })
       .then((res) => {
         console.log("res.data:", res.data);
         if (res.data.result == true) {
-          console.log("중복된 아이디 존재");
-          alert("중복된 아이디가 존재합니다.");
-          setIdValid(false);
-        } else {
           console.log("사용 가능한 아이디");
           alert("사용 가능한 아이디입니다.");
           setIdValid(true);
+        } else {
+          console.log("중복된 아이디 존재");
+          alert(res.data.messsage);
+          setIdValid(false);
         }
       })
       .catch((err) => {
@@ -55,21 +55,43 @@ export default function SignUp() {
       });
   };
 
+  // const checkEmail = (e) => {
+  //   axios
+  //     .post("http://localhost:5000/valid/exists/email", {
+  //       email: email,
+  //     })
+  //     .then((res) => {
+  //       console.log("res.data:", res.data);
+  //       if (res.data.result == true) {
+  //         console.log("이메일 인증 완료");
+  //         alert("인증완료");
+  //         setEmailValid(true);
+  //       } else {
+  //         console.log("실패");
+  //         alert(res.data.message);
+  //         setEmailValid(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("에러:", err);
+  //     });
+  // };
+
   const checkNickname = (e) => {
     axios
-      .post("http://localhost:5000/valid/nickname/exists", {
+      .post("http://localhost:5000/valid/exists/nickname", {
         nickname: name,
       })
       .then((res) => {
         console.log("res.data :", res.data);
         if (res.data.result == true) {
-          console.log("중복된 닉네임이 존재합니다");
-          alert("중복된 닉네임이 존재합니다.");
-          setNameValid(false);
-        } else {
           console.log("사용 가능한 닉네임");
           alert("사용 가능한 닉네임입니다.");
           setNameValid(true);
+        } else {
+          console.log(res.data.message);
+          alert("중복된 닉네임이 존재합니다.");
+          setNameValid(false);
         }
       })
       .catch((err) => {
@@ -78,32 +100,85 @@ export default function SignUp() {
   };
 
   const handlePwd = (e) => {
-    //최소 8자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
-    // const regexPwd =
-    //   "^(?=.*[A-Za-z])(?=.*d)(?=.*[$@$!%*#?&])[A-Za-zd$@$!%*#?&]{8,}$";
-
     setPwd(e.target.value);
+  };
 
-    // if (regexPwd.test(pwd)) {
-    //   setPwdValid(true);
-    // } else {
-    //   setPwdValid(false);
-    // }
+  const checkRegex = (e) => {
+    const regexPwd = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&]{8,16}"
+    );
+    //비밀번호 : 8~16자 대문자, 소문자, 숫자, 특수문자 필수!
+    if (regexPwd.test(pwd)) {
+      setPwdValid(true);
+      console.log("정규표현식 일치");
+    } else {
+      setPwdValid(false);
+      console.log("정규표현식 불일치");
+    }
   };
 
   const handleConfigPwd = (e) => {
     setConfigPwd(e.target.value);
   };
 
+  const checkPwd = (e) => {
+    if (pwd == configPwd) {
+      setConfigPwdValid(true);
+      console.log("비밀번호 확인 완료");
+    } else {
+      setConfigPwdValid(false);
+      console.log("입력하신 비밀번호와 일치하지 않습니다.");
+    }
+  };
+
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    // const regexEmail =
-    //   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    // if (regexEmail.test(email)) {
-    //   setEmailValid(true);
-    // } else {
-    //   setEmailValid(false);
-    // }
+    const regexEmail =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (regexEmail.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  const sendEmail = (e) => {
+    axios
+      .post("http://localhost:5000/valid/email/send", {
+        email: email,
+      })
+      .then((res) => {
+        if (res.data.result == false) {
+          alert(res.data.message);
+        } else {
+          console.log("이메일 인증 메일이 전송되었습니다.");
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  };
+
+  const configEmail = (e) => {
+    axios
+      .post("http://localhost:5000/valid/email/check", {
+        email: email,
+      })
+      .then((res) => {
+        if (res.data.result == true) {
+          console.log("인증 완료");
+          alert(res.data.message);
+          setEmailValid(true);
+        } else {
+          console.log(res.data.message);
+          console.log("인증 실패");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setEmailValid(false);
+      });
   };
 
   const register = () => {
@@ -125,12 +200,12 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    if (idValid && nameValid && emailValid) {
+    if ((idValid && nameValid && emailValid && pwdValid, configPwdValid)) {
       setNotAllow(false);
       return;
     }
     setNotAllow(true);
-  }, [idValid, nameValid, emailValid]);
+  }, [idValid, nameValid, pwdValid, emailValid]);
 
   return (
     <div style={{ width: "100%", height: "100%", margin: ") auto" }}>
@@ -155,7 +230,7 @@ export default function SignUp() {
             value={id}
             onChange={handleId}
           ></InputField>
-          <ConfirmBox>Confirm</ConfirmBox>
+          <ConfirmBox onClick={checkId}>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -168,7 +243,11 @@ export default function SignUp() {
             onChange={handlePwd}
             type="password"
           ></InputField>
-          <ConfirmBox style={{ backgroundColor: "#5e5e5e" }}></ConfirmBox>
+          <ConfirmBox
+            onClick={checkRegex} /* style={{ backgroundColor: "#5e5e5e" }}*/
+          >
+            confirm
+          </ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -181,7 +260,7 @@ export default function SignUp() {
             onChange={handleConfigPwd}
             type="password"
           ></InputField>
-          <ConfirmBox>Confirm</ConfirmBox>
+          <ConfirmBox onClick={checkPwd}>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 
@@ -193,7 +272,8 @@ export default function SignUp() {
             value={email}
             onChange={handleEmail}
           ></InputField>
-          <ConfirmBox>Confirm</ConfirmBox>
+          <ConfirmBox onClick={sendEmail}>Send</ConfirmBox>
+          <ConfirmBox onClick={configEmail}>Confirm</ConfirmBox>
         </div>
       </InputFieldWrapper>
 

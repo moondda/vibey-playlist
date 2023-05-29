@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const tokenSchema = new Schema ({
-    userId: {
+    email: {
         type : String,
         ref: "user",
         required: true,
@@ -9,7 +9,11 @@ const tokenSchema = new Schema ({
     token: {
         type : String,
         required: true,
-    }
+    },
+    emailVerified: {
+        type: Boolean, 
+        default: false
+    },
 });
 const Token = mongoose.model("token", tokenSchema);
 module.exports = Token;
