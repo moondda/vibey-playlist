@@ -8,6 +8,7 @@ import SignUpPage from "../pages/join/SignUpPage";
 import ProfilePage from "../pages/mypage/ProfilePage";
 import HomePage from "../pages/home/HomePage";
 import TodayMusicPage from "../pages/recommend/TodayMusicPage";
+import Searchpage from "../pages/searchpage";
 
 export default function RootRoute() {
   return (
@@ -19,6 +20,7 @@ export default function RootRoute() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/today-music" element={<TodayMusicPage />} />
+        <Route path="/searchsong" element={<Searchpage/>} />
       </Routes>
     </BrowserRouter>
   );

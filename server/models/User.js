@@ -11,7 +11,8 @@ const userSchema = new Schema({
     pw: { type: String },
     email: { type: String },
     token: { type: String },
-    emailVerified: { type: Boolean, default:false }
+    emailVerified: { type: Boolean, default:false },
+    // posts: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
 }, {
     timestamps: true
 });
