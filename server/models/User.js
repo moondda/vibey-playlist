@@ -11,9 +11,11 @@ const userSchema = new Schema({
     pw: { type: String },
     email: { type: String },
     token: { type: String },
-    bio: { type: String }
-}, {
+    bio: { type: String }, 
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
+},{
     timestamps: true
+
 });
 
 userSchema.pre('save', function (next) {
