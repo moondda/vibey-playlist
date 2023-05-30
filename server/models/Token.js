@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const tokenSchema = new Schema ({
     email: {
         type : String,
-        ref: "user",
+        ref: "User",
         required: true,
     },
     token: {
