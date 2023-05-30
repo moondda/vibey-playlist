@@ -104,9 +104,8 @@ export default function SignUp() {
   };
 
   const checkRegex = (e) => {
-    const regexPwd = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&]{8,16}"
-    );
+    const regexPwd =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,16}$/;
     //비밀번호 : 8~16자 대문자, 소문자, 숫자, 특수문자 필수!
     if (regexPwd.test(pwd)) {
       setPwdValid(true);
