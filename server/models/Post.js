@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema( {
-    title : {type: String, required:true},
+    song : {type: String, required:true},
     artist: {type: String, required:true},
     albumCover: {type:String},
-    createdAt : {type:Date, default: Date.now} , 
-    postedBy: {type: mongoose.Schema.Types.ObjectId, ref:'User'}
+    mp4: { type: String, required: true },
+    postedBy: {type: mongoose.Schema.Types.ObjectId, ref:'User', required: true}
 
 })
 
-module.exports = mongoose.model('Post', postSchema, 'users');
+module.exports = mongoose.model('Post', postSchema);
