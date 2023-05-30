@@ -51,16 +51,20 @@ module.exports = {
 
             return res.json({ result: true, message: "닉네임이 변경되었습니다."});
         } catch(error) {
-            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included"});
+            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
         }
     },
 
     profileImg: async (req, res) => {
         try {
-            
+            const imgfile = req.file;
+            console.log(imgfile);
 
-        } catch(error) {
-            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included"});
+            await User.updateOne({ token: req.cookies.x_auth }, { $set: { profileImg: req.file.path } });
+            return res.json({ result: true, message: "프로필 사진이 변경되었습니다." });
+
+        } catch (error) {
+            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
         }
     },
 }

@@ -5,18 +5,19 @@ const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: { type: String },
-    nickname: { type: String },
-    id: { type: String },
-    pw: { type: String },
-    email: { type: String },
+    name: { type: String, required: true },
+    nickname: { type: String, required: true },
+    id: { type: String, required: true },
+    pw: { type: String, required: true },
+    email: { type: String, required: true },
     token: { type: String },
-    bio: { type: String }, 
-    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
-},{
-    timestamps: true
-
-});
+    bio: { type: String },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    profileImg: { type: String }
+},
+    {
+        timestamps: true
+    });
 
 userSchema.pre('save', function (next) {
     let user = this; // userSchema

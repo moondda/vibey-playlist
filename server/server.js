@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const multer = require('multer')
 const authRouter = require('./routes/signupRouter');
 const validRouter = require('./routes/validRouter');
 const songRouter = require('./routes/songRouter');

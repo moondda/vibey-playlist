@@ -75,15 +75,15 @@ module.exports = {
 
     confirm: async (req, res) => {
         try {
-          const token = await Token.findOne({
-            token: req.params.token,
-          });
-            console.log(token);
-            await Token.updateOne({ email: token.email }, { $set: { emailVerified: true } });
+
+            console.log(req.params.token)
+
+            await Token.updateOne({ token: req.params.token }, { $set: { emailVerified: true } });
+
             // await Token.findByIdAndRemove(token.email);
-            res.send("이메일이 인증되었습니다.");
+            return res.json({ result: true, message: "이메일이 인증되었습니다." });
         } catch (error) {
-            res.status(400).send("에러가 발생하였습니다.")
+            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included"});
         }
     },
 
@@ -112,7 +112,7 @@ module.exports = {
             const emailToken = new Token(
                 { email: email, token: crypto.randomBytes(16).toString('hex') }
             );
-            console.log(emailToken)
+            
             await emailToken.save();
 
             // 인증 메일 전송
