@@ -6,9 +6,8 @@ import PwdEdit from "./PwdEdit";
 export default function PwdEditPage() {
   return (
     <div className="App">
-      <Title title="비밀번호 수정" />
+      <Title title="비밀번호 변경" />
       <PwdEdit />
-
       <FootBar />
     </div>
   );

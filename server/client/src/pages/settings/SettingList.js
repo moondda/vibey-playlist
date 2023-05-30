@@ -23,7 +23,7 @@ export default function SettingList() {
         <ItemList>
           <LockIcon></LockIcon>
           <SpaceList>
-            <ItemText>비밀번호 수정</ItemText>
+            <ItemText>비밀번호 변경</ItemText>
 
             <NavigateNextIcon></NavigateNextIcon>
           </SpaceList>
