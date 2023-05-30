@@ -8,7 +8,7 @@ export default function SearchBar() {
   const [searchResult, setSearchResult]=useState("");
   return (
     <Container>
-      <SearchInput placeholder="surf your wave!" value={searchResult} />
+      <SearchInput placeholder="surf your wave!" value={searchResult} onChange={(e) => setSearchResult(e.target.value)} />
       <div
         style={{
           position: "absolute",
