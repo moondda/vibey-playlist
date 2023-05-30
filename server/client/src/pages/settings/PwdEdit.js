@@ -1,7 +1,33 @@
+import axios from "axios";
 import React from "react";
 import styled from "styled-components";
+import { useState } from "react";
 
 const PwdEdit = (props) => {
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [confirmPwdValid, setConfirmPwdValid] = useState(false);
+
+  const checkPwd = (e) => {
+    axios
+      .post("http://localhost:5000/setting/check", {
+        password: confirmPwd,
+      })
+      .then((res) => {
+        console.log("res.data :", res.data);
+        if (res.data.result == true) {
+          alert(res.data.message);
+          console.log(res.data.message);
+          setConfirmPwdValid(true);
+        } else {
+          console.log(res.data.message);
+          setConfirmPwdValid(false);
+        }
+      })
+      .catch((err) => {
+        console.log("확인 실패:", err);
+      });
+  };
+
   return (
     <div style={{ width: "100%" }}>
       <InputFieldWrapper>
@@ -10,6 +36,7 @@ const PwdEdit = (props) => {
         </EditText>
         <div style={{ display: "flex" }}>
           <InputField placeholder="기존 비밀번호"></InputField>
+          <ConfirmBox onClick={checkPwd}>확인</ConfirmBox>
         </div>
       </InputFieldWrapper>
       <InputFieldWrapper>
@@ -34,6 +61,19 @@ const PwdEdit = (props) => {
 };
 
 export default PwdEdit;
+
+const ConfirmBox = styled.div`
+  background-color: #841bc5;
+  font-size: 0.8rem;
+  width: 40%;
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 10px;
+  color: white;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
 
 const ButtonBox = styled.div`
   background-color: #841bc5;
