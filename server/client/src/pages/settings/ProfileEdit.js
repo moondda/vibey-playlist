@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Profile from "../mypage/Profile";
 import styled from "styled-components";
 import editImg from "../../assets/profileImg.jpg";
 
 const ProfileEdit = (props) => {
+  const [descript, setDescript] = useState("");
+  const [nick, setNick] = useState("");
+
   return (
     <DescriptContainer>
       <div
