@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: '../variables.env' });
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -49,7 +50,7 @@ userSchema.methods.comparePassword = function (plainPassword) {
 
 userSchema.methods.generateToken = async function () {
     const user = this;
-    const token = jwt.sign(user._id.toHexString(), 'secretToken');
+    const token = jwt.sign(user._id.toHexString(), process.env.SECRET_KEY);
 
     user.token = token;
     try {

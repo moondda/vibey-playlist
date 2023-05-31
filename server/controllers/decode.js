@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 // 비밀 키
-const secretKey = 'secretToken';
+const secretKey = 'secret';
 
 const decode = (token) => {
 // 토큰 해독
