@@ -4,12 +4,13 @@ const Post = require('../models/Post');
 const jwt = require('jsonwebtoken');
 const User=require('../models/User');
 
-const secretKey = 'secretToken';
+require('dotenv').config({ path: '../variables.env' });
+
 
 const decode = async (token) => {
   // 토큰 해독
   try {
-    const decoded = await jwt.verify(token, secretKey);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     const userId = decoded; // 토큰에서 추출된 _id 값
     return userId;
   } catch (error) {
