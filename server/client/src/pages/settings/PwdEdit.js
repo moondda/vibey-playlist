@@ -1,11 +1,15 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 
 const PwdEdit = (props) => {
   const [confirmPwd, setConfirmPwd] = useState("");
   const [confirmPwdValid, setConfirmPwdValid] = useState(false);
+  const [changedPwd, setChangedPwd] = useState("");
+  const [changedPwdValid, setChangedPwdValid] = useState(false);
+
+  const [notAllow, setNotAllow] = useState(true);
 
   const checkPwd = (e) => {
     axios
@@ -27,6 +31,35 @@ const PwdEdit = (props) => {
         console.log("확인 실패:", err);
       });
   };
+
+  const saveChangedPwd = (e) => {
+    axios
+      .post("http://localhost:5000/setting/password", {
+        password: changedPwd,
+      })
+      .then((res) => {
+        console.log("res.data:", res.data);
+        if (res.data.result == true) {
+          alert(res.data.message);
+          console.log(res.data.message);
+          setChangedPwdValid(true);
+        } else {
+          console.log(res.data.message);
+          setChangedPwdValid(false);
+        }
+      })
+      .catch((err) => {
+        console.log("확인 실패:", err);
+      });
+  };
+
+  useEffect(() => {
+    if (confirmPwdValid && changedPwdValid) {
+      setNotAllow(false);
+      return;
+    }
+    setNotAllow(true);
+  }, [confirmPwdValid, changedPwdValid]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -55,7 +88,7 @@ const PwdEdit = (props) => {
           <InputField placeholder="새 비밀번호 확인"></InputField>
         </div>
       </InputFieldWrapper>
-      <ButtonBox>저장</ButtonBox>
+      <ButtonBox onClick={saveChangedPwd}>저장</ButtonBox>
     </div>
   );
 };

@@ -7,6 +7,27 @@ const ProfileEdit = (props) => {
   const [descript, setDescript] = useState("");
   const [nick, setNick] = useState("");
 
+  // const handleNickname = (e) => {
+  //   axios
+  //     .post("http://localhost:5000/setting/nickname", {
+  //       nickname: nick,
+  //     })
+  //     .then((res) => {
+  //       console.log("res.data :", res.data);
+  //       if (res.data.result == true) {
+  //         alert(res.data.message);
+  //         console.log(res.data.message);
+  //         // setConfirmPwdValid(true);
+  //       } else {
+  //         console.log(res.data.message);
+  //         // setConfirmPwdValid(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("확인 실패:", err);
+  //     });
+  // };
+
   return (
     <DescriptContainer>
       <div

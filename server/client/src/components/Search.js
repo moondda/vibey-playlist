@@ -2,13 +2,36 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export default function SearchBar() {
+  const [searchResult, setSearchResult] = useState("");
+  const [searchItem, setSearchItem] = useState([]);
 
-  const [searchResult, setSearchResult]=useState("");
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/song/search?term=${searchItem}`,
+        {
+          artist: searchItem,
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      setSearchResult(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <Container>
-      <SearchInput placeholder="surf your wave!" value={searchResult} onChange={(e) => setSearchResult(e.target.value)} />
+      <SearchInput
+        placeholder="surf your wave!"
+        value={searchItem}
+        onChange={(e) => setSearchItem(e.target.value)}
+        onKeyPress={handleSearch}
+      />
       <div
         style={{
           position: "absolute",
