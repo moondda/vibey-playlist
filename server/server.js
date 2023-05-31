@@ -10,6 +10,7 @@ const authRouter = require('./routes/signupRouter');
 const validRouter = require('./routes/validRouter');
 const songRouter = require('./routes/songRouter');
 const settingRouter = require('./routes/settingRouter');
+const followRouter=require('./routes/followRouter');
 const User = require('./models/User');
 
 require('dotenv').config({ path: 'variables.env' });
@@ -40,6 +41,8 @@ app.use('/auth', authRouter);
 app.use('/valid', validRouter);
 app.use('/song', songRouter);
 app.use('/setting', settingRouter);
+app.use('/user',followRouter);
+
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('/', function (req, res) {
