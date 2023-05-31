@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: '../variables.env' });
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -49,7 +50,7 @@ userSchema.methods.comparePassword = function (plainPassword) {
 
 userSchema.methods.generateToken = async function () {
     const user = this;
-    const token = jwt.sign(user._id.toHexString(), 'secretToken');
+    const token = jwt.sign(user._id.toHexString(), process.env.SECRET_KEY);
 
     user.token = token;
     try {
@@ -66,7 +67,7 @@ userSchema.statics.findByToken = function (token) {
     // 비동기 작업에 따라 해결(resolve)하거나 거부(reject)하는 프라미스를 반환합니다.
     return new Promise((resolve, reject) => {
         // 토큰을 검증합니다.
-        jwt.verify(token, "secretToken", function (err, decoded) {
+        jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
             if (err) {
                 return reject(err);
             }
