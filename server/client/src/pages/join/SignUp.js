@@ -199,7 +199,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    if ((idValid && nameValid && emailValid && pwdValid, configPwdValid)) {
+    if (idValid && nameValid && emailValid && pwdValid && configPwdValid) {
       setNotAllow(false);
       return;
     }
