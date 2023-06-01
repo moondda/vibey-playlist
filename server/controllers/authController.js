@@ -19,26 +19,28 @@ module.exports = {
     const userInfo = await Token.findOne({ email: req.body.email });
     console.log(userInfo)
 
-    // 이메일 인증 여부 검증
-    if (userInfo && userInfo.emailVerified) {
+    // 유저 생성
+    const user = new User({
+      name,
+      nickname,
+      id,
+      pw,
+      email,
+    });
 
-      // 유저 생성
-      const user = new User({
-        name,
-        nickname,
-        id,
-        pw,
-        email,
-      });
+    // 유저 저장
+    await user.save()
 
-      // 유저 저장
-      await user.save()
+    return res.json({ result: true, message: "회원가입이 완료되었습니다." })
 
-      return res.json({ result: true, message: "회원가입이 완료되었습니다." })
-    }
-    else {
-      return res.json({ result: false, message: "이메일 인증을 완료해주십시오." });
-    }
+
+    // // 이메일 인증 여부 검증
+    // if (userInfo && userInfo.emailVerified) {
+
+    // }
+    // else {
+    //   return res.json({ result: false, message: "이메일 인증을 완료해주십시오." });
+    // }
   },
 
   login: async (req, res) => {
