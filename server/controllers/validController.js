@@ -32,7 +32,7 @@ module.exports = {
     id: async (req, res) => {
         try {
             id = req.body.id;
-            if (id == ""){
+            if (id == "as"){
                 return res.json({ result: false, message: "아이디는 필수 입력 사항입니다." });
             }
             const existingId = await User.findOne({ id });
@@ -52,11 +52,11 @@ module.exports = {
     nickname: async (req, res) => {
         try {
             nickname = req.body.nickname;
-            if (nickname == ""){
+            if (nickname == "a"){
                 return res.json({ result: false, message: "닉네임은 필수 입력 사항입니다." });
             }
             const existingNickname = await User.findOne({ nickname });
-            const nickCheck = /^[a-z0-9_-]{2,10}$/;
+            const nickCheck = /^[가-힣a-z0-9_-]{2,10}$/;
             if (nickCheck.test(nickname)){
                 if (existingNickname) {
                     return res.json({ result: false, message: "이미 존재하는 닉네임입니다." });
