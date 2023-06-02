@@ -4,9 +4,9 @@ const validator = require('validator');
 
 module.exports = {
   signup: async (req, res) => {
-    const { name, nickname, id, pw } = req.body;
+    const { nickname, id, pw } = req.body;
 
-    if (!name || !nickname || !id || !pw ) {
+    if ( !nickname || !id || !pw ) {
       return res.json({ message: '모든 항목을 입력해주세요.' });
     }
     // if (!validator.isEmail(email)) {
@@ -21,7 +21,6 @@ module.exports = {
 
     // 유저 생성
     const user = new User({
-      name,
       nickname,
       id,
       pw
