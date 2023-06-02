@@ -10,7 +10,6 @@ const userSchema = new Schema({
     nickname: { type: String, required: true },
     id: { type: String, required: true },
     pw: { type: String, required: true },
-    email: { type: String, required: true },
     token: { type: String },
     bio: { type: String },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
