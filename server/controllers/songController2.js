@@ -36,7 +36,7 @@ module.exports = {
 
     try {
       const response = await axios.get(
-        `http://itunes.apple.com/search?limit=30&term=${searchTerm}&media=music`
+        `http://itunes.apple.com/search?limit=1000&term=${searchTerm}&media=music`
       );
       const data = response.data.results;
       res.json(data);

@@ -1,12 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 export default function SearchBar() {
-  const [searchResult, setSearchResult] = useState("");
-  const [searchItem, setSearchItem] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchItem, setSearchItem] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 9;
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const isScrolledToBottom =
+  //       window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  //     if (isScrolledToBottom) {
+  //       loadMoreItems();
+  //     }
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // });
+
+  // const loadMoreItems = () => {
+  //   if (currentPage * itemsPerPage >= searchResult.length) return;
+  //   setCurrentPage((prevPage) => prevPage + 1);
+  // };
 
   const handleSearch = async () => {
     try {
@@ -16,13 +38,16 @@ export default function SearchBar() {
           artist: searchItem,
         }
       );
-      const data = response.data;
-      console.log(data);
-      setSearchResult(data);
+      console.log("response:", response);
+      console.log(response.data);
+      setSearchResult(response.data);
+      setCurrentPage(1);
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  // const currentItems = searchResult.slice(0, currentPage * itemsPerPage);
 
   return (
     <Container>
@@ -32,6 +57,17 @@ export default function SearchBar() {
         onChange={(e) => setSearchItem(e.target.value)}
         onKeyPress={handleSearch}
       />
+      <GridBox>
+        {searchResult &&
+          searchResult.map((musicData, index) => {
+            return (
+              <Item key={index}>
+                <img src={musicData.artworkUrl100} />
+              </Item>
+            );
+          })}
+      </GridBox>
+
       <div
         style={{
           position: "absolute",
@@ -47,7 +83,36 @@ export default function SearchBar() {
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin: 0 auto;
+`;
+
+const GridBox = styled.div`
+  /* border: 3px solid red; */
+  margin: 0 auto;
+  display: grid;
+  /* place-items: center; */
+  /* flex-wrap: wrap; */
+  margin-top: 120px;
+  grid-template-columns: repeat(3, 1fr);
+  max-height: 580px;
+  overflow-y: auto;
+  /* justify-content: center; */
+  /* align-items: center; */
+  gap: 10px;
+`;
+
+const Item = styled.div`
+  /* padding: 4rem; */
+  background: #f4f4f4;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`;
 
 const SearchInput = styled.input`
   position: absolute;

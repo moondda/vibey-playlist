@@ -9,7 +9,7 @@ export default function HomePage() {
     <div className="App">
       <Title title="서핑" />
       <SearchBar />
-      <MainHome />
+      {/* <MainHome /> */}
       <FootBar />
     </div>
   );
