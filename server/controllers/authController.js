@@ -4,28 +4,27 @@ const validator = require('validator');
 
 module.exports = {
   signup: async (req, res) => {
-    const { name, nickname, id, pw, email } = req.body;
+    const { name, nickname, id, pw } = req.body;
 
-    if (!name || !nickname || !id || !pw || !email) {
+    if (!name || !nickname || !id || !pw ) {
       return res.json({ message: '모든 항목을 입력해주세요.' });
     }
-    if (!validator.isEmail(email)) {
-      return res.json({ message: '유효하지 않은 이메일입니다.' });
-    }
+    // if (!validator.isEmail(email)) {
+    //   return res.json({ message: '유효하지 않은 이메일입니다.' });
+    // }
     if (!validator.isStrongPassword(pw)) {
       return res.json({ message: "비밀번호가 안전하지 않습니다." });
     }
 
-    const userInfo = await Token.findOne({ email: req.body.email });
-    console.log(userInfo)
+    // const userInfo = await Token.findOne({ email: req.body.email });
+    // console.log(userInfo)
 
     // 유저 생성
     const user = new User({
       name,
       nickname,
       id,
-      pw,
-      email,
+      pw
     });
 
     // 유저 저장
