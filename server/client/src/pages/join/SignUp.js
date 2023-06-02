@@ -45,7 +45,7 @@ export default function SignUp() {
           alert("사용 가능한 아이디입니다.");
           setIdValid(true);
         } else {
-          console.log("중복된 아이디 존재");
+          // console.log("중복된 아이디 존재");
           alert(res.data.messsage);
           setIdValid(false);
         }
@@ -90,7 +90,7 @@ export default function SignUp() {
           setNameValid(true);
         } else {
           console.log(res.data.message);
-          alert("중복된 닉네임이 존재합니다.");
+          // alert("중복된 닉네임이 존재합니다.");
           setNameValid(false);
         }
       })
@@ -181,12 +181,16 @@ export default function SignUp() {
   };
 
   const register = () => {
+    if (notAllow) {
+      console.log("ㅅ");
+      return;
+    }
     axios
       .post("http://localhost:5000/auth/sign-up", {
         id: id,
         pw: pwd,
+        nickname: name,
         name: name,
-        email: email,
       })
       .then((response) => {
         console.log("회원가입이 완료되었습니다.");
@@ -199,12 +203,12 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    if (idValid && nameValid && emailValid && pwdValid && configPwdValid) {
+    if (idValid && nameValid && pwdValid && configPwdValid) {
       setNotAllow(false);
       return;
     }
     setNotAllow(true);
-  }, [idValid, nameValid, pwdValid, emailValid]);
+  }, [idValid, nameValid, pwdValid, configPwdValid]);
 
   return (
     <div style={{ width: "100%", height: "100%", margin: ") auto" }}>
@@ -263,7 +267,7 @@ export default function SignUp() {
         </div>
       </InputFieldWrapper>
 
-      <InputFieldWrapper>
+      {/* <InputFieldWrapper>
         <p style={{ color: "white", textAlign: "left" }}>email</p>
         <div style={{ display: "flex" }}>
           <InputField
@@ -274,9 +278,18 @@ export default function SignUp() {
           <ConfirmBox onClick={sendEmail}>Send</ConfirmBox>
           <ConfirmBox onClick={configEmail}>Confirm</ConfirmBox>
         </div>
-      </InputFieldWrapper>
+      </InputFieldWrapper> */}
 
-      <ButtonBox onClick={register}>Sign Up</ButtonBox>
+      <ButtonBox
+        disabled={notAllow}
+        type="submit"
+        onClick={() => {
+          console.log("register");
+          register();
+        }}
+      >
+        Sign Up
+      </ButtonBox>
     </div>
   );
 }
@@ -309,7 +322,7 @@ const TitleBox = styled.div`
 `;
 
 const ButtonBox = styled.div`
-  background-color: #841bc5;
+  background-color: ${(props) => (props.disabled ? "#dadada" : "#841bc5")};
   width: 320px;
   height: 50px;
   border-radius: 10px;
