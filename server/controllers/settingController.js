@@ -37,7 +37,7 @@ module.exports = {
 
     bio: async (req, res) => {
         try {
-            const token = req.cookies.x_auth;
+            const token = req.headers.authorization;
             const {bio} = req.body;
 
             const user = await User.findOne({token});
@@ -63,7 +63,7 @@ module.exports = {
 
     nickname: async (req, res) => {
         try {
-            await User.updateOne({ token: req.cookies.x_auth }, { $set: { nickname: req.body.nickname } });
+            await User.updateOne({ token: req.headers.authorization }, { $set: { nickname: req.body.nickname } });
 
             return res.json({ result: true, message: "닉네임이 변경되었습니다."});
         } catch(error) {

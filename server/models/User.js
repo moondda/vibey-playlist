@@ -10,7 +10,7 @@ const userSchema = new Schema({
     id: { type: String, required: true },
     pw: { type: String, required: true },
     token: { type: String },
-    bio: { type: String },
+    bio: { type: String, required:false },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
