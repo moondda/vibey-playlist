@@ -27,6 +27,7 @@ export default function Login() {
         console.log("로그인이 완료되었습니다.");
         alert("로그인이 완료되었습니다.");
         console.log(response.data);
+        sessionStorage.setItem("user_token", response.data.userToken);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);

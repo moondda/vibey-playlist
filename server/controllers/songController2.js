@@ -109,4 +109,28 @@ module.exports = {
       res.status(500).json({ error: "포스트 삭제에 실패했습니다." });
     }
   },
+
+  getMyPost: async (req, res) => {
+    const userToken = req.headers.authorization;
+  
+    // 토큰이 없는 경우 에러를 반환하거나 인증 실패로 처리할 수 있습니다.
+    if (!userToken) {
+      return res.status(401).json({ error: "인증 실패: 토큰이 필요합니다." });
+    }
+  
+    try {
+      const userId = await decode(userToken);
+  
+      const user = await User.findById(userId).populate("posts");
+  
+      if (!user) {
+        return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+      }
+  
+      res.status(200).json(user.posts);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "포스트 가져오기에 실패했습니다." });
+    }
+  }
 };

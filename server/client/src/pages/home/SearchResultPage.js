@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import NotiBox from "../../components/notification/NotiBox";
 import styled from "styled-components";
 import { AddModal } from "../../components/notification/AddModal";
 import FootBar from "../../components/footer/FootBar";
+import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 
 export default function SearchResultPage() {
   const location = useLocation();
@@ -12,6 +14,12 @@ export default function SearchResultPage() {
   const [trackData, setTrackData] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [artist, setArtist] = useState("");
+  const [song, setSong] = useState("");
+  const [albumCover, setAlbumCover] = useState("");
+  const [mp4, setMp4] = useState("");
 
   useEffect(() => {
     const fetchTrackData = async () => {
@@ -20,6 +28,11 @@ export default function SearchResultPage() {
           `https://itunes.apple.com/lookup?id=${trackId}&entity=song`
         );
         setTrackData(response.data);
+        setArtist(response.data.results[0].artistName);
+        setSong(response.data.results[0].trackName);
+        setAlbumCover(response.data.results[0].artworkUrl100);
+        setMp4(response.data.results[0].previewUrl);
+
       } catch (error) {
         console.error("Error:", error);
       }
@@ -31,7 +44,31 @@ export default function SearchResultPage() {
   const handleImageClick = (audioUrl) => {
     setSelectedAudio(audioUrl);
     setIsPlaying(true);
+    console.log(artist);
+    console.log(sessionStorage.getItem("user_token"));
   };
+
+  const handleSongPost = () => {
+    axios.post("http://localhost:5000/song/posting", {
+        "artist": artist,
+        "song": song,
+        "albumCover": albumCover,
+        "mp4": mp4 }
+        ,
+            {
+              headers: {
+                Authorization: `${sessionStorage.getItem("user_token")}`,
+              },
+            }
+    )
+         .then((response) => {
+        console.log("포스팅이 완료되었습니다.");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  }
 
 
   return (
@@ -41,20 +78,50 @@ export default function SearchResultPage() {
           <div className="today_music">
             <AlbumImg>
               {trackData.results[0] && (
-                <img src={trackData.results[0].artworkUrl100} style={{ width: "250px" }} alt="Album cover" onClick={() => handleImageClick(trackData.results[0].previewUrl)} />
+                <img src={albumCover} style={{ width: "250px" }} alt="Album cover" onClick={() => handleImageClick(mp4)} />
               )}
             </AlbumImg>
             {trackData.results[0] && (
               <DescripBox>
-                <MusicTitle>{trackData.results[0].trackName}</MusicTitle>
-                <div>{trackData.results[0].artistName}</div>
+                <MusicTitle>{song}</MusicTitle>
+                <div>{artist}</div>
               </DescripBox>
             )}
           </div>
         )}
         <audio src={selectedAudio} autoPlay={isPlaying} />
+        <AddToPhotosIcon
+        style={{
+          position: "fixed",
+          top: "15px",
+          right: "130px",
+          color: "white",
+        }}
+        onClick={() => {
+          setModalIsOpen(!modalIsOpen);
+          console.log("눌림");
+          handleSongPost();
+        }}
+      />
+      <AddDeleteBtnn
+        onClick={() => {
+          setModalIsOpen(!modalIsOpen);
+          console.log("눌림");
+
+        }}
+      >
+        Add to my playlist
+      </AddDeleteBtnn>
+      {modalIsOpen === true
+        ? modalIsOpen && (
+            <NotiBox
+              noti="You have added successfully!"
+              onClose={setModalIsOpen}
+            />
+          )
+        : null}
       </div>
-      <AddModal />
+     
       <FootBar />
     </div>
   );
@@ -85,28 +152,13 @@ const MusicTitle = styled.div`
   margin-bottom: 10px;
 `;
 
-const Player = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
-const PlayButton = styled.button`
-  background-color: #ffffff;
-  color: #000000;
+const AddDeleteBtnn = styled.button`
+  background-color: #5e5e5e;
   border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  cursor: pointer;
-`;
-
-const ProgressBar = styled.div`
-  width: 300px;
-  height: 10px;
-  background-color: #dddddd;
-`;
-
-const Progress = styled.div`
-  width:  ${(props) => props.progress}%;
-  height: 100%;
-  background-color: #ff0000;
+  color: white;
+  margin: 18px 13px 18px 13px;
+  right: 0;
+  top: 0;
+  position: fixed;
 `;

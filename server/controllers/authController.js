@@ -64,7 +64,7 @@ module.exports = {
       const user = await userInfo.generateToken();
       res.cookie("x_auth", user.token)
         .status(200)
-        .json({ loginSuccess: true, userId: user._id, message: '로그인 완료' });
+        .json({ loginSuccess: true, userId: user._id, userToken: user.token, message: '로그인 완료' });
         
     } catch (err) {
       return res.status(400).send(err);
