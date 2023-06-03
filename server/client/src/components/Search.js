@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import SearchResultPage from "../pages/home/SearchResultPage";
 
 export default function SearchBar() {
   const [searchResult, setSearchResult] = useState([]);
@@ -62,7 +64,9 @@ export default function SearchBar() {
           searchResult.map((musicData, index) => {
             return (
               <Item key={index}>
+                 <Link to={`/search-result?trackId=${musicData.trackId}`}>
                 <img src={musicData.artworkUrl100} />
+                </Link>
               </Item>
             );
           })}
