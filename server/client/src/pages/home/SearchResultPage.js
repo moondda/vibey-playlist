@@ -32,7 +32,6 @@ export default function SearchResultPage() {
         setSong(response.data.results[0].trackName);
         setAlbumCover(response.data.results[0].artworkUrl100);
         setMp4(response.data.results[0].previewUrl);
-
       } catch (error) {
         console.error("Error:", error);
       }
@@ -49,36 +48,50 @@ export default function SearchResultPage() {
   };
 
   const handleSongPost = () => {
-    axios.post("http://localhost:5000/song/posting", {
-        "artist": artist,
-        "song": song,
-        "albumCover": albumCover,
-        "mp4": mp4 }
-        ,
-            {
-              headers: {
-                Authorization: `${sessionStorage.getItem("user_token")}`,
-              },
-            }
-    )
-         .then((response) => {
+    axios
+      .post(
+        "http://localhost:5000/song/posting",
+        {
+          artist: artist,
+          song: song,
+          albumCover: albumCover,
+          mp4: mp4,
+        },
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
+      .then((response) => {
         console.log("포스팅이 완료되었습니다.");
         console.log(response.data);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
       });
-  }
-
+  };
 
   return (
     <div className="App">
-      <div style={{ display: "flex", justifyContent: "center", width: "100%", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          flexDirection: "column",
+        }}
+      >
         {trackData && trackData.results && (
           <div className="today_music">
             <AlbumImg>
               {trackData.results[0] && (
-                <img src={albumCover} style={{ width: "250px" }} alt="Album cover" onClick={() => handleImageClick(mp4)} />
+                <img
+                  src={albumCover}
+                  style={{ width: "250px" }}
+                  alt="Album cover"
+                  onClick={() => handleImageClick(mp4)}
+                />
               )}
             </AlbumImg>
             {trackData.results[0] && (
@@ -91,41 +104,39 @@ export default function SearchResultPage() {
         )}
         <audio src={selectedAudio} autoPlay={isPlaying} />
         <AddToPhotosIcon
-        style={{
-          position: "fixed",
-          top: "15px",
-          right: "130px",
-          color: "white",
-        }}
-        onClick={() => {
-          setModalIsOpen(!modalIsOpen);
-          console.log("눌림");
-          handleSongPost();
-        }}
-      />
-      <AddDeleteBtnn
-        onClick={() => {
-          setModalIsOpen(!modalIsOpen);
-          console.log("눌림");
-
-        }}
-      >
-        Add to my playlist
-      </AddDeleteBtnn>
-      {modalIsOpen === true
-        ? modalIsOpen && (
-            <NotiBox
-              noti="You have added successfully!"
-              onClose={setModalIsOpen}
-            />
-          )
-        : null}
+          style={{
+            position: "fixed",
+            top: "15px",
+            right: "130px",
+            color: "white",
+          }}
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+            handleSongPost();
+          }}
+        />
+        <AddDeleteBtnn
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+          }}
+        >
+          Add to my playlist
+        </AddDeleteBtnn>
+        {modalIsOpen === true
+          ? modalIsOpen && (
+              <NotiBox
+                noti="You have added successfully!"
+                onClose={setModalIsOpen}
+              />
+            )
+          : null}
       </div>
-     
+
       <FootBar />
     </div>
   );
-
 }
 
 const AlbumImg = styled.div`
@@ -151,7 +162,6 @@ const MusicTitle = styled.div`
   font-size: 20px;
   margin-bottom: 10px;
 `;
-
 
 const AddDeleteBtnn = styled.button`
   background-color: #5e5e5e;

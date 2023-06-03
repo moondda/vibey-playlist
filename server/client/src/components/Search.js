@@ -10,7 +10,6 @@ export default function SearchBar() {
   const [searchResult, setSearchResult] = useState([]);
   const [searchItem, setSearchItem] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
   // const itemsPerPage = 9;
 
   // useEffect(() => {
@@ -43,7 +42,6 @@ export default function SearchBar() {
       console.log("response:", response);
       console.log(response.data);
       setSearchResult(response.data);
-      setCurrentPage(1);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -64,8 +62,8 @@ export default function SearchBar() {
           searchResult.map((musicData, index) => {
             return (
               <Item key={index}>
-                 <Link to={`/search-result?trackId=${musicData.trackId}`}>
-                <img src={musicData.artworkUrl100} />
+                <Link to={`/search-result?trackId=${musicData.trackId}`}>
+                  <img src={musicData.artworkUrl100} />
                 </Link>
               </Item>
             );
