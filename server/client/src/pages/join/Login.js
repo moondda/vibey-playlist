@@ -3,49 +3,68 @@ import styled from "styled-components";
 import logo from "../../assets/logo_vibey.png";
 import { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router";
 
 export default function Login() {
-
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
 
-  const handleId = (e) =>{
+  const navigate = useNavigate();
+
+  const handleId = (e) => {
     setId(e.target.value);
-  }
+  };
 
-  const handlePwd = (e) =>{
+  const handlePwd = (e) => {
     setPwd(e.target.value);
-
-  }
+  };
   const handleLogin = () => {
-    axios.post("http://localhost:5000/auth/login", {
-      id: id,
-      pw: pwd
-    })
-         .then((response) => {
-        console.log("로그인이 완료되었습니다.");
-        alert("로그인이 완료되었습니다.");
+    axios
+      .post("http://localhost:5000/auth/login", {
+        id: id,
+        pw: pwd,
+      })
+      .then((response) => {
+        alert(response.data.message);
         console.log(response.data);
         sessionStorage.setItem("user_token", response.data.userToken);
+        if (response.data.loginSuccess == true) {
+          console.log("로그인 성공");
+          navigate("/home");
+        }
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
       });
-  }
+  };
 
   return (
     <div className="login_box">
       <img src={logo} style={{ width: "150px", marginBottom: "40px" }}></img>
 
       <div>
-        <InputBox className="user_login" placeholder="username" value={id} onChange={handleId}></InputBox>
+        <InputBox
+          className="user_login"
+          placeholder="username"
+          value={id}
+          onChange={handleId}
+        ></InputBox>
 
-        <InputBox className="user_password" placeholder="password" value={pwd} onChange={handlePwd}></InputBox>
+        <InputBox
+          className="user_password"
+          placeholder="password"
+          value={pwd}
+          onChange={handlePwd}
+        ></InputBox>
 
-        <ButtonBox type="submit"
-        onClick={() => { handleLogin();
-        }}>Sign in</ButtonBox>
+        <ButtonBox
+          type="submit"
+          onClick={() => {
+            handleLogin();
+          }}
+        >
+          Sign in
+        </ButtonBox>
       </div>
     </div>
   );
@@ -66,6 +85,7 @@ const InputBox = styled.input`
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
+  outline: none;
 `;
 
 const ButtonBox = styled.div`
