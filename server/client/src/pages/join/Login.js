@@ -1,18 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../../assets/logo_vibey.png";
+import { useState } from "react";
+import axios from "axios";
+
 
 export default function Login() {
+
+  const [id, setId] = useState("");
+  const [pwd, setPwd] = useState("");
+
+  const handleId = (e) =>{
+    setId(e.target.value);
+  }
+
+  const handlePwd = (e) =>{
+    setPwd(e.target.value);
+
+  }
+  const handleLogin = () => {
+    axios.post("http://localhost:5000/auth/login", {
+      id: id,
+      pw: pwd
+    })
+         .then((response) => {
+        console.log("로그인이 완료되었습니다.");
+        alert("로그인이 완료되었습니다.");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  }
+
   return (
     <div className="login_box">
       <img src={logo} style={{ width: "150px", marginBottom: "40px" }}></img>
 
       <div>
-        <InputBox className="user_login" placeholder="username"></InputBox>
+        <InputBox className="user_login" placeholder="username" value={id} onChange={handleId}></InputBox>
 
-        <InputBox className="user_password" placeholder="password"></InputBox>
+        <InputBox className="user_password" placeholder="password" value={pwd} onChange={handlePwd}></InputBox>
 
-        <ButtonBox>Sign in</ButtonBox>
+        <ButtonBox type="submit"
+        onClick={() => { handleLogin();
+        }}>Sign in</ButtonBox>
       </div>
     </div>
   );

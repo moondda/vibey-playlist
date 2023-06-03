@@ -11,6 +11,7 @@ import TodayMusicPage from "../pages/recommend/TodayMusicPage";
 import SettingPage from "../pages/settings/SettingPage";
 import ProfileEditPage from "../pages/settings/ProfileEditPage";
 import PwdEditPage from "../pages/settings/PwdEditPage";
+import SearchResultPage from "../pages/home/SearchResultPage";
 
 export default function RootRoute() {
   return (
@@ -25,6 +26,7 @@ export default function RootRoute() {
         <Route path="/settings" element={<SettingPage />} />
         <Route path="/settings/profile-edit" element={<ProfileEditPage />} />
         <Route path="/settings/password-edit" element={<PwdEditPage />} />
+        <Route path="/search-result" element={<SearchResultPage/>} />
       </Routes>
     </BrowserRouter>
   );
