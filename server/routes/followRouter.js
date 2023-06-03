@@ -4,7 +4,7 @@ const followController=require('../controllers/followController');
 
 router.post("/follow/:id",followController.follow);
 router.post("/unfollow/:id",followController.unfollow);
-router.get("/count-follow-post/:id",followController.countFollowingFollowersPost);
+router.get("/info",followController.getUserInfo);
 
 module.exports= router;
 

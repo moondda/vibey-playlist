@@ -89,15 +89,19 @@ module.exports = {
 
     },
 
-    countFollowingFollowersPost : async(req,res) => {
-        const UserId=req.params.id;
+    getUserInfo : async(req,res) => {
+        const userToken = req.headers.authorization;
         try {
+        const UserId = await decode(userToken);
         const user = await User.findById(UserId);
         const countFollowing = user.following.length;
         const countFollowers = user.followers.length;
         const countPost = user.posts.length;
+        const nickname= user.nickname;
+        const bio=user.bio;
+        const profileImg=user.profileImg;
 
-        res.status(200).json({countFollowing,countFollowers,countPost});
+        res.status(200).json({nickname,bio,profileImg,countFollowing,countFollowers,countPost});
         }
         catch(error) {
             console.log('Error',error);

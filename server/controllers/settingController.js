@@ -37,7 +37,23 @@ module.exports = {
 
     bio: async (req, res) => {
         try {
-            await User.updateOne({ token: req.cookies.x_auth }, { $set: { bio: req.body.bio } });
+            const token = req.cookies.x_auth;
+            const {bio} = req.body;
+
+            const user = await User.findOne({token});
+
+            if(!user) {
+                return res.json({result: false, message: "사용자를 찾을 수 없습니다"})
+            }
+
+            if (!user.bio && bio) {
+                user.bio = bio;
+                await user.save();
+            } else if (user.bio !== bio) {
+                user.bio = bio;
+                await user.save();
+            }
+
 
             return res.json({ result: true, message: "한 줄 소개가 변경되었습니다."});
         } catch(error) {
@@ -51,6 +67,7 @@ module.exports = {
 
             return res.json({ result: true, message: "닉네임이 변경되었습니다."});
         } catch(error) {
+            
             return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
         }
     },
@@ -61,7 +78,7 @@ module.exports = {
             console.log(imgfile);
 
             await User.updateOne({ token: req.cookies.x_auth }, { $set: { profileImg: req.file.path } });
-            return res.json({ result: true, message: "프로필 사진이 변경되었습니다." });
+            return res.json({ result: true, profileImg, message: "프로필 사진이 변경되었습니다." });
 
         } catch (error) {
             return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
