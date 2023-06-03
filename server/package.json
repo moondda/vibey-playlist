@@ -28,6 +28,7 @@
     "mongoose": "^7.0.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.2",
+    "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.10.0",
     "recoil": "^0.7.7",
     "request": "^2.88.2",
