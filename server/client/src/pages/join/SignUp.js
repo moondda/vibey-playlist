@@ -182,7 +182,7 @@ export default function SignUp() {
 
   const register = () => {
     if (notAllow) {
-      console.log("ㅅ");
+      console.log("register");
       return;
     }
     axios
@@ -190,7 +190,6 @@ export default function SignUp() {
         id: id,
         pw: pwd,
         nickname: name,
-        name: name,
       })
       .then((response) => {
         console.log("회원가입이 완료되었습니다.");

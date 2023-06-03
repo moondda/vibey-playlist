@@ -127,4 +127,5 @@ const SearchInput = styled.input`
   /* margin: 0 auto; */
   padding-left: 10px;
   padding-right: 10px;
+  outline: none;
 `;
