@@ -88,26 +88,37 @@ module.exports = {
 
 
     },
-
-    getUserInfo : async(req,res) => {
-        const userToken = req.headers.authorization;
-        try {
-        const UserId = await decode(userToken);
-        const user = await User.findById(UserId);
+    
+    getUserInfo: async (req, res) => {
+      const userNick = req.params.nickname;
+    
+      try {
+        const user = await User.findOne({ nickname: userNick }).exec();
+    
+        if (!user) {
+          console.log("NO USER FOUND");
+          return res.status(404).json({ error: "No user found" });
+        }
+    
         const countFollowing = user.following.length;
         const countFollowers = user.followers.length;
         const countPost = user.posts.length;
-        const nickname= user.nickname;
-        const bio=user.bio;
-        const profileImg=user.profileImg;
-
-        res.status(200).json({nickname,bio,profileImg,countFollowing,countFollowers,countPost});
-        }
-        catch(error) {
-            console.log('Error',error);
-            res.status(500).json("error: Failed to count");
-        }
-
+        const nickname = user.nickname;
+        const bio = user.bio;
+        const profileImg = user.profileImg;
+    
+        res.status(200).json({
+          nickname,
+          bio,
+          profileImg,
+          countFollowing,
+          countFollowers,
+          countPost,
+        });
+      } catch (error) {
+        console.log("Error", error);
+        res.status(500).json({ error: "Failed to retrieve user information" });
+      }
     }
 
 
