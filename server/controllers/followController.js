@@ -88,6 +88,27 @@ module.exports = {
 
 
     },
+
+    getMyInfo : async(req,res) => {
+      const userToken = req.headers.authorization;
+      try {
+      const UserId = await decode(userToken);
+      const user = await User.findById(UserId);
+      const countFollowing = user.following.length;
+      const countFollowers = user.followers.length;
+      const countPost = user.posts.length;
+      const nickname= user.nickname;
+      const bio=user.bio;
+      const profileImg=user.profileImg;
+
+      res.status(200).json({nickname,bio,profileImg,countFollowing,countFollowers,countPost});
+      }
+      catch(error) {
+          console.log('Error',error);
+          res.status(500).json("error: Failed to count");
+      }
+
+  },
     
     getUserInfo: async (req, res) => {
       const userNick = req.params.nickname;
