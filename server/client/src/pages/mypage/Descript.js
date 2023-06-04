@@ -20,6 +20,7 @@ const Descript = (props) => {
 
   const viewUserInfo = async (nickname) => {
     try {
+      if(nickname){
       const response = await axios.get(`http://localhost:5000/user/info/${nickname}`);
       const data = response.data;
       console.log("res.data:", data);
@@ -27,7 +28,28 @@ const Descript = (props) => {
       setBio(data.bio);
       setCountFeed(data.countPost);
       setCountFollower(data.countFollowers);
-      setCountFollowing(data.countFollowing);
+      setCountFollowing(data.countFollowing); }
+      else {
+        const res = await axios
+        .get("http://localhost:5000/user/info", {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        })
+        .then((res) => {
+          const data = res.data;
+          console.log("res.data:", data);
+          setProfileName(data.nickname);
+          setBio(data.bio);
+          setCountFeed(data.countPost);
+          setCountFollower(data.countFollowers);
+          setCountFollowing(data.countFollowing);
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
+
+      }
     } catch (error) {
       console.log("Error", error);
     }

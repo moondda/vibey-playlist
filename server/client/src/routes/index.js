@@ -20,6 +20,7 @@ export default function RootRoute() {
         <Route path="/" element={<SignUp2 />} />
         <Route path="/auth/sign-up" element={<SignUpPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/:nickname" element={<ProfilePage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/today-music" element={<TodayMusicPage />} />
