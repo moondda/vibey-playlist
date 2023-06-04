@@ -78,7 +78,7 @@ module.exports = {
             console.log(imgfile);
 
             await User.updateOne({ token: req.cookies.x_auth }, { $set: { profileImg: req.file.path } });
-            return res.json({ result: true, profileImg, message: "프로필 사진이 변경되었습니다." });
+            return res.json({ result: true, message: "프로필 사진이 변경되었습니다." });
 
         } catch (error) {
             return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
