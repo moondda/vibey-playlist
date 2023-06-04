@@ -4,6 +4,7 @@ import Profile from "./Profile";
 import pfImg from "../../assets/profileImg.jpg";
 import { useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 //이미지, 닉네임, 한줄소개 컴포넌트
 
@@ -14,31 +15,28 @@ const Descript = (props) => {
   const [countFollower, setCountFollower] = useState(0);
   const [countFollowing, setCountFollowing] = useState(0);
   const [img, setImg] = useState("");
+  const location = useLocation();
+  const nickname = location.pathname.split("/")[2];
 
-  const viewUserInfo = () => {
-    axios
-      .get("http://localhost:5000/user/info", {
-        headers: {
-          Authorization: `${sessionStorage.getItem("user_token")}`,
-        },
-      })
-      .then((res) => {
-        console.log("res.data:", res.data);
-        setProfileName(res.data.nickname);
-        setBio(res.data.bio);
-        setCountFeed(res.data.countPost);
-        setCountFollower(res.data.countFollowers);
-        setCountFollowing(res.data.countFollowing);
-      })
-      .catch((err) => {
-        console.log("Error", err);
-      });
+  const viewUserInfo = async (nickname) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/user/info/${nickname}`);
+      const data = response.data;
+      console.log("res.data:", data);
+      setProfileName(data.nickname);
+      setBio(data.bio);
+      setCountFeed(data.countPost);
+      setCountFollower(data.countFollowers);
+      setCountFollowing(data.countFollowing);
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 
   useEffect(() => {
     console.log("dfd");
-    viewUserInfo();
-  }, []);
+    viewUserInfo(nickname);
+  }, [nickname]);
 
   return (
     <DescriptContainer>
