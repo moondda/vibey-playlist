@@ -11,19 +11,60 @@ const PwdEdit = (props) => {
 
   const [notAllow, setNotAllow] = useState(true);
 
+  const checkPwd2 = async (e) => {
+    // e.preventDefault(); // 이벤트의 기본 동작을 막습니다.
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/setting/check",
+        { pw: confirmPwd },
+        { withCredentials: true }
+      );
+
+      // 응답 데이터 확인
+      console.log(response.data);
+
+      if (response.data.result) {
+        // 비밀번호가 일치하는 경우
+        alert(response.data.message);
+        setConfirmPwdValid(true);
+      } else {
+        // 비밀번호가 일치하지 않는 경우
+        alert(response.data.message);
+        setConfirmPwdValid(false);
+      }
+    } catch (error) {
+      console.error("확인 실패:", error);
+    }
+  };
+
   const checkPwd = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
     axios
-      .post("http://localhost:5000/setting/check", {
-        password: confirmPwd,
-      })
+      .post(
+        "http://localhost:5000/setting/check",
+        {
+          pw: confirmPwd,
+        },
+        {
+          // withCredentials: true, // 쿠키를 요청 헤더에 포함시킴
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
       .then((res) => {
+        console.log(confirmPwd);
+        console.log("token:", sessionStorage.getItem("user_token"));
+        // console.log("checkPwd시작", res);
         console.log("res.data :", res.data);
-        if (res.data.result == true) {
+        if (res.data.result === true) {
           alert(res.data.message);
           console.log(res.data.message);
           setConfirmPwdValid(true);
         } else {
           console.log(res.data.message);
+          console.log("실패");
           setConfirmPwdValid(false);
         }
       })
@@ -53,13 +94,13 @@ const PwdEdit = (props) => {
       });
   };
 
-  useEffect(() => {
-    if (confirmPwdValid && changedPwdValid) {
-      setNotAllow(false);
-      return;
-    }
-    setNotAllow(true);
-  }, [confirmPwdValid, changedPwdValid]);
+  // useEffect(() => {
+  //   if (confirmPwdValid && changedPwdValid) {
+  //     setNotAllow(false);
+  //     return;
+  //   }
+  //   setNotAllow(true);
+  // }, [confirmPwdValid, changedPwdValid]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -68,8 +109,21 @@ const PwdEdit = (props) => {
           기존 비밀번호
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="기존 비밀번호"></InputField>
-          <ConfirmBox onClick={checkPwd}>확인</ConfirmBox>
+          <InputField
+            placeholder="기존 비밀번호를 입력해주세요"
+            type="password"
+            value={confirmPwd}
+            onChange={(e) => {
+              setConfirmPwd(e.target.value);
+            }}
+          ></InputField>
+          <ConfirmBox
+            onClick={(e) => {
+              checkPwd();
+            }}
+          >
+            확인
+          </ConfirmBox>
         </div>
       </InputFieldWrapper>
       <InputFieldWrapper>
