@@ -3,6 +3,7 @@ import NotiBox from "./NotiBox";
 import styled from "styled-components";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export const AddModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
