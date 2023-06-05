@@ -11,7 +11,7 @@ export default function TodayMusicPage() {
       <TodayMusic />
       {/* <TodayTemp /> */}
       {/* <NotiBox noti="You have deleted successfully!"></NotiBox> */}
-      <AddModal />
+      {/* <AddModal /> */}
       <FootBar />
     </div>
   );

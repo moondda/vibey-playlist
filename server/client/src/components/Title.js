@@ -16,8 +16,8 @@ const TodayText = styled.div`
   left: 36px;
   top: 60px;
 
-  font-family: "Inter";
-  font-style: normal;
+  /* font-family: "Inter"; */
+  /* font-style: normal; */
   font-weight: 600;
   font-size: 30px;
   line-height: 44px;

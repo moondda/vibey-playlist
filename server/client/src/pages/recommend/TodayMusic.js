@@ -3,6 +3,8 @@ import styled from "styled-components";
 import songImg from "../../assets/golden_hour.jpg";
 import axios from "axios";
 import Loading from "./Loading";
+import NotiBox from "../../components/notification/NotiBox";
+import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 
 export default function TodayTemp() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +15,10 @@ export default function TodayTemp() {
   const [singer, setSinger] = useState("");
   const [title, setTitle] = useState("");
   const [musicImg, setMusicImg] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [selectedAudio, setSelectedAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [musicPlay, setMusicPlay] = useState("");
 
   const recommendMusic = async () => {
@@ -37,6 +43,37 @@ export default function TodayTemp() {
     recommendMusic();
   }, []);
 
+  const handleImageClick = (audioUrl) => {
+    setSelectedAudio(audioUrl);
+    setIsPlaying(true);
+    console.log(singer);
+    console.log(sessionStorage.getItem("user_token"));
+  };
+
+  const handleSongPost = () => {
+    axios
+      .post(
+        "http://localhost:5000/song/posting",
+        {
+          artist: singer,
+          song: title,
+          albumCover: musicImg,
+          mp4: musicPlay,
+        },
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("포스팅이 완료되었습니다.");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
   // useEffect((e) => {
   //   async function fetchMusic() {
   //     const res = await axios.get("http://localhost:5000/today-music/random");
@@ -75,6 +112,7 @@ export default function TodayTemp() {
               <img
                 src={musicImg}
                 style={{ width: "250px", height: "250px" }}
+                onClick={() => handleImageClick(musicPlay)}
               ></img>
             </AlbumImg>
 
@@ -84,6 +122,36 @@ export default function TodayTemp() {
             </DescripBox>
           </div>
         )}
+        <audio src={selectedAudio} autoPlay={isPlaying} />
+        <AddToPhotosIcon
+          style={{
+            position: "fixed",
+            top: "15px",
+            right: "130px",
+            color: "white",
+          }}
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+            handleSongPost();
+          }}
+        />
+        <AddDeleteBtnn
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+          }}
+        >
+          Add to my playlist
+        </AddDeleteBtnn>
+        {modalIsOpen === true
+          ? modalIsOpen && (
+              <NotiBox
+                noti="You have added successfully!"
+                onClose={setModalIsOpen}
+              />
+            )
+          : null}
       </div>
 
       {/* <div style={{ border: "1px solid pink" }}>노래 재생바?</div> */}
@@ -135,4 +203,14 @@ const AlbumImg = styled.div`
 const MusicTitle = styled.div`
   font-size: 20px;
   margin-bottom: 10px;
+`;
+
+const AddDeleteBtnn = styled.button`
+  background-color: #5e5e5e;
+  border: none;
+  color: white;
+  margin: 18px 13px 18px 13px;
+  right: 0;
+  top: 0;
+  position: fixed;
 `;
