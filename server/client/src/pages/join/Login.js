@@ -54,6 +54,7 @@ export default function Login() {
           className="user_password"
           placeholder="password"
           value={pwd}
+          type="password"
           onChange={handlePwd}
         ></InputBox>
 
