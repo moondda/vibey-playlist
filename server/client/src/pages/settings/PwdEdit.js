@@ -8,35 +8,9 @@ const PwdEdit = (props) => {
   const [confirmPwdValid, setConfirmPwdValid] = useState(false);
   const [changedPwd, setChangedPwd] = useState("");
   const [changedPwdValid, setChangedPwdValid] = useState(false);
+  const [rechangedPwd, setRechangedPwd] = useState("");
 
   const [notAllow, setNotAllow] = useState(true);
-
-  const checkPwd2 = async (e) => {
-    // e.preventDefault(); // 이벤트의 기본 동작을 막습니다.
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/setting/check",
-        { pw: confirmPwd },
-        { withCredentials: true }
-      );
-
-      // 응답 데이터 확인
-      console.log(response.data);
-
-      if (response.data.result) {
-        // 비밀번호가 일치하는 경우
-        alert(response.data.message);
-        setConfirmPwdValid(true);
-      } else {
-        // 비밀번호가 일치하지 않는 경우
-        alert(response.data.message);
-        setConfirmPwdValid(false);
-      }
-    } catch (error) {
-      console.error("확인 실패:", error);
-    }
-  };
 
   const checkPwd = (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -49,11 +23,12 @@ const PwdEdit = (props) => {
         {
           // withCredentials: true, // 쿠키를 요청 헤더에 포함시킴
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("user_token")}`,
+            Authorization: `${sessionStorage.getItem("user_token")}`,
           },
         }
       )
       .then((res) => {
+        // console.log("req:", req);
         console.log(confirmPwd);
         console.log("token:", sessionStorage.getItem("user_token"));
         // console.log("checkPwd시작", res);
@@ -64,7 +39,6 @@ const PwdEdit = (props) => {
           setConfirmPwdValid(true);
         } else {
           console.log(res.data.message);
-          console.log("실패");
           setConfirmPwdValid(false);
         }
       })
@@ -74,25 +48,41 @@ const PwdEdit = (props) => {
   };
 
   const saveChangedPwd = (e) => {
-    axios
-      .post("http://localhost:5000/setting/password", {
-        password: changedPwd,
-      })
-      .then((res) => {
-        console.log("res.data:", res.data);
-        if (res.data.result == true) {
-          alert(res.data.message);
-          console.log(res.data.message);
-          setChangedPwdValid(true);
-        } else {
-          console.log(res.data.message);
-          setChangedPwdValid(false);
-        }
-      })
-      .catch((err) => {
-        console.log("확인 실패:", err);
-      });
+    console.log(changedPwd, rechangedPwd);
+    if (changedPwd == rechangedPwd) {
+      axios
+        .post(
+          "http://localhost:5000/setting/password",
+          {
+            pw: changedPwd,
+          },
+          {
+            // withCredentials: true, // 쿠키를 요청 헤더에 포함시킴
+            headers: {
+              Authorization: `${sessionStorage.getItem("user_token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("res.data:", res.data);
+          if (res.data.result == true) {
+            alert(res.data.message);
+            console.log(res.data.message);
+            setChangedPwdValid(true);
+          } else {
+            console.log(res.data.message);
+            alert(res.data.message);
+            setChangedPwdValid(false);
+          }
+        })
+        .catch((err) => {
+          console.log("확인 실패:", err);
+        });
+    } else {
+      alert("새로 입력하신 비밀번호가 일치하지 않습니다.");
+    }
   };
+  //asdf//Chae0606!
 
   // useEffect(() => {
   //   if (confirmPwdValid && changedPwdValid) {
@@ -131,7 +121,14 @@ const PwdEdit = (props) => {
           새 비밀번호
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="새 비밀번호"></InputField>
+          <InputField
+            placeholder="새 비밀번호"
+            type="password"
+            value={changedPwd}
+            onChange={(e) => {
+              setChangedPwd(e.target.value);
+            }}
+          ></InputField>
         </div>
       </InputFieldWrapper>
       <InputFieldWrapper>
@@ -139,7 +136,14 @@ const PwdEdit = (props) => {
           새 비밀번호 확인
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="새 비밀번호 확인"></InputField>
+          <InputField
+            placeholder="새 비밀번호 확인"
+            type="password"
+            value={rechangedPwd}
+            onChange={(e) => {
+              setRechangedPwd(e.target.value);
+            }}
+          ></InputField>
         </div>
       </InputFieldWrapper>
       <ButtonBox onClick={saveChangedPwd}>저장</ButtonBox>

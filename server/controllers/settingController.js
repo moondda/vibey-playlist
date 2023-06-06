@@ -11,23 +11,23 @@ const bucket = storage.bucket("vibey"); // 구글 클라우드 스토리지 버�
 module.exports = {
   check: async (req, res) => {
     try {
-      const loginUser = await User.findOne({
-        token: req.cookies.x_auth,
-      });
+      const token = req.headers.authorization;
+      // "eyJhbGciOiJIUzI1NiJ9.NjQ3YWRhMmY1NmFiNmI4ZTljYTMzNjgx.T3K5mgI4n0gyM1o10dwIsQ-Ig6hIRRbGoQPtkulvkes";
+      const loginUser = await User.findOne({ token });
 
       const isMatch = await loginUser.comparePassword(req.body.pw);
 
       if (isMatch) {
-        return res.json({ result: true, message: "비밀번호가 일치합니다." });
+        return res.json({ success: true, message: "비밀번호가 일치합니다." });
       } else {
         return res.json({
-          result: false,
+          success: false,
           message: "비밀번호가 일치하지 않습니다.",
         });
       }
     } catch (error) {
       return res.json({
-        result: false,
+        success: false,
         code: "INVALID_PARAMETER",
         message: "Invalid parameter included",
       });
@@ -36,10 +36,8 @@ module.exports = {
 
   password: async (req, res) => {
     try {
-      const loginUser = await User.findOne({
-        token: req.cookies.x_auth,
-      });
-
+      const token = req.headers.authorization;
+      const loginUser = await User.findOne({ token });
       loginUser.pw = req.body.pw;
       loginUser.save();
 
