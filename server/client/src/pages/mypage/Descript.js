@@ -60,8 +60,28 @@ const Descript = (props) => {
       }
     } catch (error) {
       console.log("Error", error);
+      alert(err);
     }
   };
+
+  const handleFollow = () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/user/follow/6480a3010b6fd0018f9876eb",
+        { nickname: nick },
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      );
+     
+
+
+    } catch (err) {
+      console.log("Error", err);
+    }
+  }
 
   useEffect(() => {
     console.log("dfd");
@@ -85,6 +105,8 @@ const Descript = (props) => {
           <p style={{ fontSize: "12px", color: "#eee" }}>
             email : dge3179@ajou.ac.kr
           </p>
+          <button>팔로우</button>
+          {/* {userData._id !== loggedInUserId && <button>팔로우</button>} */}
         </ProfileIntro>
       </div>
 
