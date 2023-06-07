@@ -11,6 +11,8 @@ export default function Profile() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState(null);
 
+  const [trackId, setTrackId] = useState("");
+
   const handleImageClick = (audioUrl) => {
     setSelectedAudio(audioUrl);
     setIsPlaying(true);
@@ -28,6 +30,7 @@ export default function Profile() {
         console.log("res.data입니다:", res.data);
         setMyMusic(res.data);
         setMp4(res.data.mp4);
+        setTrackId(res.data.trackId);
         console.log("myMusic:", myMusic);
         console.log("mp4:", mp4);
       })
@@ -55,14 +58,14 @@ export default function Profile() {
           myMusic.map((musicData, index) => {
             return (
               <Item key={index}>
-                {/* <Link to={`/search-result?trackId=${musicData.trackId}`}> */}
-                <img
-                  src={musicData.albumCover}
-                  style={{ width: "100%" }}
-                  alt="Album cover"
-                  onClick={() => handleImageClick(mp4)}
-                />
-                {/* </Link> */}
+                <Link to={`/search-result?trackId=${musicData.trackId}`}>
+                  <img
+                    src={musicData.albumCover}
+                    style={{ width: "100%" }}
+                    alt="Album cover"
+                    onClick={() => handleImageClick(mp4)}
+                  />
+                </Link>
               </Item>
             );
           })}
