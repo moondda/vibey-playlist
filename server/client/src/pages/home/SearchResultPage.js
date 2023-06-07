@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { AddModal } from "../../components/notification/AddModal";
 import FootBar from "../../components/footer/FootBar";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export default function SearchResultPage() {
   const location = useLocation();
@@ -82,13 +83,11 @@ export default function SearchResultPage() {
 
   const handleSongDelete = () => {
     axios
-      .delete(
-        `http://localhost:5000/song/deletepost/${trackId}`, {
-          headers: {
-            Authorization: `${sessionStorage.getItem("user_token")}`,
-          },
-        }
-      )
+      .delete(`http://localhost:5000/song/deletepost/${trackId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("user_token")}`,
+        },
+      })
       .then((response) => {
         console.log("포스팅이 삭제되었습니다.");
         console.log(response.data);
@@ -151,6 +150,19 @@ export default function SearchResultPage() {
           Add to my playlist
         </AddDeleteBtnn>
 
+        <DeleteIcon
+          style={{
+            position: "fixed",
+            top: "45px",
+            right: "160px",
+            color: "white",
+          }}
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+            handleSongPost();
+          }}
+        />
         <AddDeleteBtn
           onClick={() => {
             setModalIsOpen(!modalIsOpen);
