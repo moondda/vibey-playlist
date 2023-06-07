@@ -108,8 +108,6 @@ export default function FeedResult(props) {
           flexDirection: "column",
         }}
       >
-        <p style={{ color: "white" }}>he1llo</p>
-
         {/* {trackData && (
           <AlbumImg>
             <img
