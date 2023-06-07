@@ -20,8 +20,7 @@ export default function SearchResultPage() {
   const [song, setSong] = useState("");
   const [albumCover, setAlbumCover] = useState("");
   const [mp4, setMp4] = useState("");
-  const [trackid,setTrackid] = useState("");
-
+  const [trackid, setTrackid] = useState("");
 
   useEffect(() => {
     const fetchTrackData = async () => {
@@ -60,7 +59,7 @@ export default function SearchResultPage() {
           song: song,
           albumCover: albumCover,
           mp4: mp4,
-          trackId: trackid
+          trackId: trackid,
         },
         {
           headers: {
@@ -169,7 +168,7 @@ const MusicTitle = styled.div`
 `;
 
 const AddDeleteBtnn = styled.button`
-  background-color: #5e5e5e;
+  background-color: #252525;
   border: none;
   color: white;
   margin: 18px 13px 18px 13px;
