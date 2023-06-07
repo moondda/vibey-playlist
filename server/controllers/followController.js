@@ -140,7 +140,7 @@ module.exports = {
         console.log("Error", error);
         res.status(500).json({ error: "Failed to retrieve user information" });
       }
-    }
+    },
 
 
 }

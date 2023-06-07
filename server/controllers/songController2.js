@@ -134,4 +134,24 @@ module.exports = {
       res.status(500).json({ error: "포스트 가져오기에 실패했습니다." });
     }
   },
+
+
+     
+  getUserPost: async (req, res) => {
+    const userNick = req.params.nickname;
+  
+    try {
+      const user = await User.findOne({ nickname: userNick }).populate("posts").exec();
+  
+      if (!user) {
+        console.log("NO USER FOUND");
+        return res.status(404).json({ error: "No user found" });
+      }
+
+      res.status(200).json(user.posts);
+    } catch (error) {
+      console.log("Error", error);
+      res.status(500).json({ error: "Failed to retrieve user information" });
+    }
+  }
 };
