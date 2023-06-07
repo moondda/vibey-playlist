@@ -3,6 +3,7 @@ import NotiBox from "./NotiBox";
 import styled from "styled-components";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export const AddModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -50,7 +51,7 @@ export const AddModal = () => {
 };
 
 const AddDeleteBtn = styled.button`
-  background-color: #5e5e5e;
+  background-color: #252525;
   border: none;
   color: white;
   margin: 18px 13px 18px 13px;

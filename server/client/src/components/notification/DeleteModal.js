@@ -41,7 +41,7 @@ export const DeleteModal = () => {
 };
 
 const AddDeleteBtn = styled.button`
-  background-color: #5e5e5e;
+  background-color: #252525;
   border: none;
   color: white;
   margin: 18px 13px 18px 13px;

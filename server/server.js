@@ -13,7 +13,7 @@ const settingRouter = require('./routes/settingRouter');
 const followRouter = require('./routes/followRouter');
 const todayMusicRouter = require('./routes/todayMusicRouter');
 const User = require('./models/User');
-const fs = require('fs');
+const { initGridFS } = require('./gridfs');
 
 require('dotenv').config({ path: 'variables.env' });
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URL, {
   dbName: 'vibey-playlist',
 })
   .then(() => {
+    initGridFS();
     console.log("Connected to MongoDB");
   })
   .catch((err) => {
@@ -43,16 +44,8 @@ app.use('/auth', authRouter);
 app.use('/valid', validRouter);
 app.use('/song', songRouter);
 app.use('/setting', settingRouter);
-app.use('/user',followRouter);
-app.use('/today-music',todayMusicRouter);
-
-try {
-  fs.readdirSync('uploads');
-} catch (error) {
-  console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
-  fs.mkdirSync('uploads');
-}
-
+app.use('/user', followRouter);
+app.use('/today-music', todayMusicRouter);
 
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('/', function (req, res) {

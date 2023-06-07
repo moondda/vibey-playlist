@@ -5,6 +5,17 @@ import styled from "styled-components";
 export default function Profile() {
   const [myMusic, setMyMusic] = useState([]);
 
+  const [mp4, setMp4] = useState("");
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [selectedAudio, setSelectedAudio] = useState(null);
+
+  const handleImageClick = (audioUrl) => {
+    setSelectedAudio(audioUrl);
+    setIsPlaying(true);
+    console.log(sessionStorage.getItem("user_token"));
+  };
+
   const viewMyFeed = () => {
     axios
       .get("http://localhost:5000/song/mypost", {
@@ -15,6 +26,7 @@ export default function Profile() {
       .then((res) => {
         console.log("res.data:", res.data);
         setMyMusic(res.data);
+        setMp4(res.data.mp4);
         console.log("myMusic:", myMusic);
       })
       .catch((err) => {
@@ -56,12 +68,18 @@ export default function Profile() {
             return (
               <Item key={index}>
                 {/* <Link to={`/search-result?trackId=${musicData.trackId}`}> */}
-                <img src={musicData.albumCover} style={{ width: "100%" }} />
+                <img
+                  src={musicData.albumCover}
+                  style={{ width: "100%" }}
+                  alt="Album cover"
+                  onClick={() => handleImageClick(mp4)}
+                />
                 {/* </Link> */}
               </Item>
             );
           })}
       </GridBox>
+      <audio src={selectedAudio} autoPlay={isPlaying} />
     </div>
   );
 }

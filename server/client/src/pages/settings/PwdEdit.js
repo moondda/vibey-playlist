@@ -2,23 +2,41 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const PwdEdit = (props) => {
   const [confirmPwd, setConfirmPwd] = useState("");
   const [confirmPwdValid, setConfirmPwdValid] = useState(false);
   const [changedPwd, setChangedPwd] = useState("");
   const [changedPwdValid, setChangedPwdValid] = useState(false);
+  const [rechangedPwd, setRechangedPwd] = useState("");
 
   const [notAllow, setNotAllow] = useState(true);
 
+  const navigate = useNavigate();
+
   const checkPwd = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
     axios
-      .post("http://localhost:5000/setting/check", {
-        password: confirmPwd,
-      })
+      .post(
+        "http://localhost:5000/setting/check",
+        {
+          pw: confirmPwd,
+        },
+        {
+          // withCredentials: true, // 쿠키를 요청 헤더에 포함시킴
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
       .then((res) => {
+        // console.log("req:", req);
+        console.log(confirmPwd);
+        console.log("token:", sessionStorage.getItem("user_token"));
+        // console.log("checkPwd시작", res);
         console.log("res.data :", res.data);
-        if (res.data.result == true) {
+        if (res.data.result === true) {
           alert(res.data.message);
           console.log(res.data.message);
           setConfirmPwdValid(true);
@@ -33,33 +51,50 @@ const PwdEdit = (props) => {
   };
 
   const saveChangedPwd = (e) => {
-    axios
-      .post("http://localhost:5000/setting/password", {
-        password: changedPwd,
-      })
-      .then((res) => {
-        console.log("res.data:", res.data);
-        if (res.data.result == true) {
-          alert(res.data.message);
-          console.log(res.data.message);
-          setChangedPwdValid(true);
-        } else {
-          console.log(res.data.message);
-          setChangedPwdValid(false);
-        }
-      })
-      .catch((err) => {
-        console.log("확인 실패:", err);
-      });
-  };
-
-  useEffect(() => {
-    if (confirmPwdValid && changedPwdValid) {
-      setNotAllow(false);
-      return;
+    console.log(changedPwd, rechangedPwd);
+    if (changedPwd == rechangedPwd) {
+      axios
+        .post(
+          "http://localhost:5000/setting/password",
+          {
+            pw: changedPwd,
+          },
+          {
+            // withCredentials: true, // 쿠키를 요청 헤더에 포함시킴
+            headers: {
+              Authorization: `${sessionStorage.getItem("user_token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("res.data:", res.data);
+          if (res.data.result == true) {
+            alert(res.data.message);
+            console.log(res.data.message);
+            setChangedPwdValid(true);
+            navigate("/profile");
+          } else {
+            console.log(res.data.message);
+            alert(res.data.message);
+            setChangedPwdValid(false);
+          }
+        })
+        .catch((err) => {
+          console.log("확인 실패:", err);
+        });
+    } else {
+      alert("새로 입력하신 비밀번호가 일치하지 않습니다.");
     }
-    setNotAllow(true);
-  }, [confirmPwdValid, changedPwdValid]);
+  };
+  //asdf//Chae0606!
+
+  // useEffect(() => {
+  //   if (confirmPwdValid && changedPwdValid) {
+  //     setNotAllow(false);
+  //     return;
+  //   }
+  //   setNotAllow(true);
+  // }, [confirmPwdValid, changedPwdValid]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -68,8 +103,21 @@ const PwdEdit = (props) => {
           기존 비밀번호
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="기존 비밀번호"></InputField>
-          <ConfirmBox onClick={checkPwd}>확인</ConfirmBox>
+          <InputField
+            placeholder="기존 비밀번호를 입력해주세요"
+            type="password"
+            value={confirmPwd}
+            onChange={(e) => {
+              setConfirmPwd(e.target.value);
+            }}
+          ></InputField>
+          <ConfirmBox
+            onClick={(e) => {
+              checkPwd();
+            }}
+          >
+            확인
+          </ConfirmBox>
         </div>
       </InputFieldWrapper>
       <InputFieldWrapper>
@@ -77,7 +125,14 @@ const PwdEdit = (props) => {
           새 비밀번호
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="새 비밀번호"></InputField>
+          <InputField
+            placeholder="새 비밀번호"
+            type="password"
+            value={changedPwd}
+            onChange={(e) => {
+              setChangedPwd(e.target.value);
+            }}
+          ></InputField>
         </div>
       </InputFieldWrapper>
       <InputFieldWrapper>
@@ -85,7 +140,14 @@ const PwdEdit = (props) => {
           새 비밀번호 확인
         </EditText>
         <div style={{ display: "flex" }}>
-          <InputField placeholder="새 비밀번호 확인"></InputField>
+          <InputField
+            placeholder="새 비밀번호 확인"
+            type="password"
+            value={rechangedPwd}
+            onChange={(e) => {
+              setRechangedPwd(e.target.value);
+            }}
+          ></InputField>
         </div>
       </InputFieldWrapper>
       <ButtonBox onClick={saveChangedPwd}>저장</ButtonBox>
