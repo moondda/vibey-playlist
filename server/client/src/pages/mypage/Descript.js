@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import pfImg from "../../assets/profileImg.jpg";
 import { useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // import User from "../../../../models/User";
 
 //이미지, 닉네임, 한줄소개 컴포넌트
@@ -18,6 +18,10 @@ const Descript = (props) => {
   const [img, setImg] = useState("");
   const location = useLocation();
   const nickname = location.pathname.split("/")[2];
+
+  const [followStatus, setFollowStatus] = useState(false);
+
+  const [userId, setUserId] = useState("");
 
   const [userData, setUserData] = useState([]);
 
@@ -36,6 +40,7 @@ const Descript = (props) => {
         setCountFollower(data.countFollowers);
         setCountFollowing(data.countFollowing);
         setUserData(data);
+        setUserId(data.objectId);
       } else {
         const res = await axios
           .get("http://localhost:5000/user/info", {
@@ -53,6 +58,7 @@ const Descript = (props) => {
             setCountFollower(data.countFollowers);
             setCountFollowing(data.countFollowing);
             setUserData(data);
+            setUserId(data.objectId);
           })
           .catch((err) => {
             console.log("Error", err);
@@ -60,33 +66,38 @@ const Descript = (props) => {
       }
     } catch (error) {
       console.log("Error", error);
-      alert(err);
+      alert(error);
     }
   };
-
-  const handleFollow = () => {
-    try {
-      await axios.post(
-        "http://localhost:5000/user/follow/6480a3010b6fd0018f9876eb",
-        { nickname: nick },
-        {
-          headers: {
-            Authorization: `${sessionStorage.getItem("user_token")}`,
-          },
-        }
-      );
-     
-
-
-    } catch (err) {
-      console.log("Error", err);
-    }
-  }
 
   useEffect(() => {
     console.log("dfd");
     viewUserInfo(nickname);
   }, [nickname]);
+
+  const actfollow = () => {
+    console.log("userId", userId);
+    axios
+      .post(
+        `http://localhost:5000/user/follow/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("res.data:", res.data);
+        if (res.data.message === "Successfully followed") {
+          setFollowStatus(true);
+        }
+      })
+      .catch((err) => {
+        console.log("err:", err);
+      });
+  };
+  console.log("followstatus:", followStatus);
 
   return (
     <DescriptContainer>
@@ -105,7 +116,9 @@ const Descript = (props) => {
           <p style={{ fontSize: "12px", color: "#eee" }}>
             email : dge3179@ajou.ac.kr
           </p>
-          <button>팔로우</button>
+          <button onClick={actfollow} style={{ fontWeight: "700" }}>
+            {followStatus ? "언팔로우" : "팔로우"}
+          </button>
           {/* {userData._id !== loggedInUserId && <button>팔로우</button>} */}
         </ProfileIntro>
       </div>
@@ -116,12 +129,23 @@ const Descript = (props) => {
           <p>피드</p>
         </FollowText>
         <FollowText>
-          <p>{countFollower}</p>
-          <p>팔로워</p>
+          <Link
+            to="/profile/followers"
+            style={{ textDecoration: "none", color: "#ffffff" }}
+          >
+            {" "}
+            <p>{countFollower}</p>
+            <p>팔로워</p>
+          </Link>
         </FollowText>
         <FollowText>
-          <p>{countFollowing}</p>
-          <p>팔로잉</p>
+          <Link
+            to="/profile/following"
+            style={{ textDecoration: "none", color: "#ffffff" }}
+          >
+            <p>{countFollowing}</p>
+            <p>팔로잉</p>
+          </Link>
         </FollowText>
       </FollowBox>
     </DescriptContainer>

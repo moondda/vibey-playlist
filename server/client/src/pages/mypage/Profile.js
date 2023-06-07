@@ -75,7 +75,7 @@ export default function Profile() {
       style={{
         width: "100%",
         position: "absolute",
-        top: "420px",
+        top: "440px",
       }}
     >
       <GridBox>
