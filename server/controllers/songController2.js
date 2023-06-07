@@ -47,7 +47,7 @@ module.exports = {
   },
 
   postsong: async (req, res) => {
-    const { artist, song, albumCover, mp4 } = req.body;
+    const { artist, song, albumCover, mp4, trackId } = req.body;
     const userToken = req.headers.authorization;
 
     // 토큰이 없는 경우 에러를 반환하거나 인증 실패로 처리할 수 있습니다.
@@ -64,6 +64,7 @@ module.exports = {
         song,
         albumCover,
         mp4,
+        trackId,
         postedBy: id,
       });
 

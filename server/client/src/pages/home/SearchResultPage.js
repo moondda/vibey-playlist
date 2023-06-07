@@ -20,6 +20,8 @@ export default function SearchResultPage() {
   const [song, setSong] = useState("");
   const [albumCover, setAlbumCover] = useState("");
   const [mp4, setMp4] = useState("");
+  const [trackid,setTrackid] = useState("");
+
 
   useEffect(() => {
     const fetchTrackData = async () => {
@@ -27,11 +29,13 @@ export default function SearchResultPage() {
         const response = await axios.get(
           `https://itunes.apple.com/lookup?id=${trackId}&entity=song`
         );
+        console.log(response.data.results[0]);
         setTrackData(response.data);
         setArtist(response.data.results[0].artistName);
         setSong(response.data.results[0].trackName);
         setAlbumCover(response.data.results[0].artworkUrl100);
         setMp4(response.data.results[0].previewUrl);
+        setTrackid(response.data.results[0].trackId);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -56,6 +60,7 @@ export default function SearchResultPage() {
           song: song,
           albumCover: albumCover,
           mp4: mp4,
+          trackId: trackid
         },
         {
           headers: {
