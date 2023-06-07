@@ -142,6 +142,24 @@ module.exports = {
       }
     },
 
+    getMyFollowingInfo: async(req,res) => {
+
+      const userToken = req.headers.authorization;
+      try {
+      const UserId = await decode(userToken);
+      const user = await User.findById(UserId);
+      const following = user.following;
+      const followers = user.followers;
+
+      res.status(200).json({following,followers});
+      }
+      catch(error) {
+          console.log('Error',error);
+          res.status(500).json("error: Failed to count");
+      }
+
+    }
+
 
 }
 
