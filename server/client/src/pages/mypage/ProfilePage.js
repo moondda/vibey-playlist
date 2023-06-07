@@ -4,11 +4,14 @@ import Descript from "./Descript";
 import styled from "styled-components";
 import Title from "../../components/Title";
 import FootBar from "../../components/footer/FootBar";
+import SearchBar from "../../components/Search";
+import FindUser from "../user/FindUser";
 
 export default function ProfilePage() {
   return (
     <div className="App">
       <Title title="프로필" />
+      <FindUser />
       <Descript />
       <Profile />
       <FootBar />

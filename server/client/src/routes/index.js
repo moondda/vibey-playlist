@@ -12,6 +12,8 @@ import SettingPage from "../pages/settings/SettingPage";
 import ProfileEditPage from "../pages/settings/ProfileEditPage";
 import PwdEditPage from "../pages/settings/PwdEditPage";
 import SearchResultPage from "../pages/home/SearchResultPage";
+import FeedResult from "../pages/mypage/FeedResult";
+import UserFollowingPage from "../pages/user/UserFollowingPage";
 
 export default function RootRoute() {
   return (
@@ -27,7 +29,10 @@ export default function RootRoute() {
         <Route path="/settings" element={<SettingPage />} />
         <Route path="/settings/profile-edit" element={<ProfileEditPage />} />
         <Route path="/settings/password-edit" element={<PwdEditPage />} />
-        <Route path="/search-result" element={<SearchResultPage/>} />
+        <Route path="/search-result" element={<SearchResultPage />} />
+        <Route path="/feed-result/:id" element={<FeedResult />} />
+
+        <Route path="/profile/following" element={<UserFollowingPage />} />
       </Routes>
     </BrowserRouter>
   );

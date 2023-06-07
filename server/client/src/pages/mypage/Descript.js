@@ -23,7 +23,6 @@ const Descript = (props) => {
 
   const viewUserInfo = async (nickname) => {
     try {
-
       if (nickname) {
         const response = await axios.get(
           `http://localhost:5000/user/info/${nickname}`
@@ -58,7 +57,6 @@ const Descript = (props) => {
           .catch((err) => {
             console.log("Error", err);
           });
-
       }
     } catch (error) {
       console.log("Error", error);
@@ -74,8 +72,8 @@ const Descript = (props) => {
     <DescriptContainer>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProfileImg>
-          <img  src={userData.profileImg}
-
+          <img
+            src={userData.profileImg}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ProfileImg>
@@ -112,7 +110,8 @@ export default Descript;
 
 const DescriptContainer = styled.div`
   /* border: 1px solid pink; */
-  top: 130px;
+  /* top: 130px; */
+  top: 190px;
   width: 100%;
   display: flex;
   position: absolute;
