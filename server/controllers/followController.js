@@ -99,9 +99,10 @@ module.exports = {
       const countPost = user.posts.length;
       const nickname= user.nickname;
       const bio=user.bio;
+      const objectId = user._id;
       const profileImg=user.profileImg;
 
-      res.status(200).json({nickname,bio,profileImg,countFollowing,countFollowers,countPost});
+      res.status(200).json({objectId,nickname,bio,profileImg,countFollowing,countFollowers,countPost});
       }
       catch(error) {
           console.log('Error',error);
@@ -151,7 +152,32 @@ module.exports = {
       const following = user.following;
       const followers = user.followers;
 
-      res.status(200).json({following,followers});
+      const followingInfo = [];
+      const followersInfo = [];
+
+   // 팔로잉 정보 가져오기
+   for (const followingId of following) {
+    const followingUser = await User.findById(followingId);
+    followingInfo.push({
+      _id: followingUser._id,
+      profileImage: followingUser.profileImg,
+      nickname: followingUser.nickname,
+    });
+  }
+
+  // 팔로워 정보 가져오기
+  for (const followerId of followers) {
+    const followerUser = await User.findById(followerId);
+    followersInfo.push({
+      _id: followerUser._id,
+      profileImage: followerUser.profileImg,
+      nickname: followerUser.nickname,
+    });
+  }
+
+
+
+      res.status(200).json({ following: followingInfo, followers: followersInfo });
       }
       catch(error) {
           console.log('Error',error);
