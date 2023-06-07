@@ -23,43 +23,40 @@ export default function Profile() {
   };
 
   const viewMyFeed = async (nickname) => {
-    if(nickname){
+    if (nickname) {
       console.log(nickname);
       axios
-      .get(`http://localhost:5000/song/other-post/${nickname}`, {
-
-      })
-      .then((res) => {
-        console.log("res.data입니다:", res.data);
-        setMyMusic(res.data);
-        setMp4(res.data.mp4);
-        setTrackId(res.data.trackId);
-        console.log("myMusic:", myMusic);
-        console.log("mp4:", mp4);
-      })
-      .catch((err) => {
-        console.log("Error", err);
-      });
-
+        .get(`http://localhost:5000/song/other-post/${nickname}`, {})
+        .then((res) => {
+          console.log("res.data입니다:", res.data);
+          setMyMusic(res.data);
+          setMp4(res.data.mp4);
+          setTrackId(res.data.trackId);
+          console.log("myMusic:", myMusic);
+          console.log("mp4:", mp4);
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
+    } else {
+      axios
+        .get("http://localhost:5000/song/mypost", {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        })
+        .then((res) => {
+          console.log("res.data입니다:", res.data);
+          setMyMusic(res.data);
+          setMp4(res.data.mp4);
+          setTrackId(res.data.trackId);
+          console.log("myMusic:", myMusic);
+          console.log("mp4:", mp4);
+        })
+        .catch((err) => {
+          console.log("Error", err);
+        });
     }
-    else{
-    axios
-      .get("http://localhost:5000/song/mypost", {
-        headers: {
-          Authorization: `${sessionStorage.getItem("user_token")}`,
-        },
-      })
-      .then((res) => {
-        console.log("res.data입니다:", res.data);
-        setMyMusic(res.data);
-        setMp4(res.data.mp4);
-        setTrackId(res.data.trackId);
-        console.log("myMusic:", myMusic);
-        console.log("mp4:", mp4);
-      })
-      .catch((err) => {
-        console.log("Error", err);
-      });}
   };
 
   useEffect(() => {
@@ -73,7 +70,7 @@ export default function Profile() {
       style={{
         width: "100%",
         position: "absolute",
-        top: "370px",
+        top: "440px",
       }}
     >
       <GridBox>

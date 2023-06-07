@@ -36,15 +36,16 @@ module.exports = {
       const artistName = track.artistName;
       const artwork = track.artworkUrl100;
       const previewUrl = track.previewUrl;
-      const trackId= track.trackId;
+      const trackId = track.trackId;
 
       // 곡 정보 반환
       res.json({
+        trackId,
         trackName,
         artistName,
         artwork,
         previewUrl,
-        trackId
+        trackId,
       });
     } catch (error) {
       console.error("Error:", error);

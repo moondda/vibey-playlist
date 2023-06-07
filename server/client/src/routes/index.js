@@ -14,6 +14,7 @@ import PwdEditPage from "../pages/settings/PwdEditPage";
 import SearchResultPage from "../pages/home/SearchResultPage";
 import FeedResult from "../pages/mypage/FeedResult";
 import UserFollowingPage from "../pages/user/UserFollowingPage";
+import UserFollowerPage from "../pages/user/UserFollowerPage";
 
 export default function RootRoute() {
   return (
@@ -33,6 +34,7 @@ export default function RootRoute() {
         <Route path="/feed-result/:id" element={<FeedResult />} />
 
         <Route path="/profile/following" element={<UserFollowingPage />} />
+        <Route path="/profile/followers" element={<UserFollowerPage />} />
       </Routes>
     </BrowserRouter>
   );

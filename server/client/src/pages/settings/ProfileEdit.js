@@ -217,6 +217,7 @@ const ProfileEdit = (props) => {
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             /> */}
           </ProfileImg>
+          <br />
           <label
             htmlFor="profileImage"
             style={{
@@ -325,7 +326,7 @@ const ProfileImg = styled.div`
   border-radius: 70%;
   overflow: hidden;
   margin: 10px;
-  /* border: 1px solid red; */
+  border: 1px solid #ffffff;
 `;
 
 const EditText = styled.p`
