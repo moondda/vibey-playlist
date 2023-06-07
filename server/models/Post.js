@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema( {
     artist: {type: String, required:true},
     albumCover: {type:String},
     mp4: { type: String, required: true },
+    trackId: {type:Number, required:true},
     postedBy: {type: mongoose.Schema.Types.ObjectId, ref:'User', required: true}
 
 })

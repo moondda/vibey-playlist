@@ -23,39 +23,7 @@ const Descript = (props) => {
 
   const viewUserInfo = async (nickname) => {
     try {
-<<<<<<< HEAD
-      if(nickname){
-      const response = await axios.get(`http://localhost:5000/user/info/${nickname}`);
-      const data = response.data;
-      console.log("res.data:", data);
-      setProfileName(data.nickname);
-      setBio(data.bio);
-      setImg(data.profileImg);
-      setCountFeed(data.countPost);
-      setCountFollower(data.countFollowers);
-      setCountFollowing(data.countFollowing); }
-      else {
-        const res = await axios
-        .get("http://localhost:5000/user/info", {
-          headers: {
-            Authorization: `${sessionStorage.getItem("user_token")}`,
-          },
-        })
-        .then((res) => {
-          const data = res.data;
-          console.log("res.data:", data);
-          setProfileName(data.nickname);
-          setBio(data.bio);
-          setImg(data.profileImg);
-          setCountFeed(data.countPost);
-          setCountFollower(data.countFollowers);
-          setCountFollowing(data.countFollowing);
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        });
 
-=======
       if (nickname) {
         const response = await axios.get(
           `http://localhost:5000/user/info/${nickname}`
@@ -90,7 +58,7 @@ const Descript = (props) => {
           .catch((err) => {
             console.log("Error", err);
           });
->>>>>>> 46a65dbe012df4be009dab8aa3b09f5c7709e637
+
       }
     } catch (error) {
       console.log("Error", error);
@@ -106,12 +74,8 @@ const Descript = (props) => {
     <DescriptContainer>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProfileImg>
-          <img
-<<<<<<< HEAD
-            src={img}
-=======
-            src={userData.profileImg}
->>>>>>> 46a65dbe012df4be009dab8aa3b09f5c7709e637
+          <img  src={userData.profileImg}
+
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ProfileImg>
