@@ -13,13 +13,36 @@ export default function Profile() {
 
   const [trackId, setTrackId] = useState("");
 
+  const location = useLocation();
+  const nickname = location.pathname.split("/")[2];
+
   const handleImageClick = (audioUrl) => {
     setSelectedAudio(audioUrl);
     setIsPlaying(true);
     console.log(sessionStorage.getItem("user_token"));
   };
 
-  const viewMyFeed = () => {
+  const viewMyFeed = async (nickname) => {
+    if(nickname){
+      console.log(nickname);
+      axios
+      .get(`http://localhost:5000/song/other-post/${nickname}`, {
+
+      })
+      .then((res) => {
+        console.log("res.data입니다:", res.data);
+        setMyMusic(res.data);
+        setMp4(res.data.mp4);
+        setTrackId(res.data.trackId);
+        console.log("myMusic:", myMusic);
+        console.log("mp4:", mp4);
+      })
+      .catch((err) => {
+        console.log("Error", err);
+      });
+
+    }
+    else{
     axios
       .get("http://localhost:5000/song/mypost", {
         headers: {
@@ -36,14 +59,14 @@ export default function Profile() {
       })
       .catch((err) => {
         console.log("Error", err);
-      });
+      });}
   };
 
   useEffect(() => {
     console.log("useEffect실행");
 
-    viewMyFeed();
-  }, []);
+    viewMyFeed(nickname);
+  }, [nickname]);
 
   return (
     <div
