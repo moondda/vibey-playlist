@@ -1,24 +1,50 @@
 const User = require('../models/User');
 
 module.exports = {
+    // check: async (req, res) => {
+    //     try {
+    //         const loginUser = await User.findOne({
+    //             token: req.cookies.x_auth
+    //         });
+            
+    //         const isMatch = await loginUser.comparePassword(req.body.pw);
+
+    //         if (isMatch) {
+    //             return res.json({ result: true, message: "비밀번호가 일치합니다." });
+    //         } else {
+    //             return res.json({ result: false, message: "비밀번호가 일치하지 않습니다." });
+    //         }
+
+    //     } catch (error) {
+    //         return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
+    //     }
+    // },
     check: async (req, res) => {
         try {
-            const loginUser = await User.findOne({
-                token: req.cookies.x_auth
+          const token = req.headers.authorization;
+          const loginUser = await User.findOne({ token });
+      
+          console.log("loginUser", loginUser);
+      
+         const isMatch = await loginUser.comparePassword(req.body.pw);
+
+      
+          if (isMatch) {
+            return res.json({ success: true, message: "비밀번호가 일치합니다." });
+          } else {
+            return res.json({
+              success: false,
+              message: "비밀번호가 일치하지 않습니다.",
             });
-            
-            const isMatch = await loginUser.comparePassword(req.body.pw);
-
-            if (isMatch) {
-                return res.json({ result: true, message: "비밀번호가 일치합니다." });
-            } else {
-                return res.json({ result: false, message: "비밀번호가 일치하지 않습니다." });
-            }
-
+          }
         } catch (error) {
-            return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });
+          return res.json({
+            success: false,
+            code: "INVALID_PARAMETER",
+            message: "Invalid parameter included",
+          });
         }
-    },
+      },
 
     password: async (req, res) => {
         try {
@@ -78,7 +104,8 @@ module.exports = {
             console.log(imgfile);
 
             await User.updateOne({ token: req.cookies.x_auth }, { $set: { profileImg: req.file.path } });
-            return res.json({ result: true, message: "프로필 사진이 변경되었습니다." });
+            const profileImgUrl = req.file.path;
+            return res.json({ result: true, message: "프로필 사진이 변경되었습니다." ,profileImgUrl });
 
         } catch (error) {
             return res.json({ result: false, code: "INVALID_PARAMETER", message: "Invalid parameter included" });

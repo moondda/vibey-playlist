@@ -26,6 +26,7 @@ const Descript = (props) => {
       console.log("res.data:", data);
       setProfileName(data.nickname);
       setBio(data.bio);
+      setImg(data.profileImg);
       setCountFeed(data.countPost);
       setCountFollower(data.countFollowers);
       setCountFollowing(data.countFollowing); }
@@ -41,6 +42,7 @@ const Descript = (props) => {
           console.log("res.data:", data);
           setProfileName(data.nickname);
           setBio(data.bio);
+          setImg(data.profileImg);
           setCountFeed(data.countPost);
           setCountFollower(data.countFollowers);
           setCountFollowing(data.countFollowing);
@@ -65,7 +67,7 @@ const Descript = (props) => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProfileImg>
           <img
-            src={pfImg}
+            src={img}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ProfileImg>
