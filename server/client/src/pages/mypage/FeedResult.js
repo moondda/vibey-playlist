@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import NotiBox from "../../components/notification/NotiBox";
 import styled from "styled-components";
 import { AddModal } from "../../components/notification/AddModal";
 import FootBar from "../../components/footer/FootBar";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-export default function SearchResultPage() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const trackId = searchParams.get("trackId");
-
+export default function FeedResult(props) {
   const [trackData, setTrackData] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState(null);
@@ -21,19 +18,48 @@ export default function SearchResultPage() {
 
   const [artist, setArtist] = useState("");
   const [song, setSong] = useState("");
-  const [albumCover, setAlbumCover] = useState("");
   const [mp4, setMp4] = useState("");
   const [trackid, setTrackid] = useState("");
+  const [albumCover, setAlbumCover] = useState("");
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objId = searchParams.get("_id");
+  // const [objId, setObjId] = useState("");
+
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [selectedTrackIndex, setSelectedTrackIndex] = useState(null);
+
+  let { id } = useParams();
+
+  let findId = props.shoes.find(function (item) {
+    return item.id == id;
+  });
+
+  const handleSelectedTrack = (track, index) => {
+    setSelectedTrackIndex(index);
+    console.log("index:", index);
+    setSelectedTrack(track);
+    setIsPlaying(true);
+    console.log(artist);
+    console.log(sessionStorage.getItem("user_token"));
+  };
 
   useEffect(() => {
-    const fetchTrackData = async () => {
+    const fetchMyMusic = async () => {
+      console.log("fetchMyMusic");
       try {
-        const response = await axios.get(
-          `https://itunes.apple.com/lookup?id=${trackId}&entity=song`
-        );
-        console.log("여기", response.data.results[0]);
-        setTrackData(response.data);
-        setArtist(response.data.results[0].artistName);
+        const response = await axios.get(`http://localhost:5000/song/mypost`, {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        });
+        console.log("response-data", response.data);
+        setTrackData(response.data.results[0]);
+
+        // setObjId(response.data._id);
+        // console.log(objId);
+        setArtist(response.data.artistName);
         setSong(response.data.results[0].trackName);
         setAlbumCover(response.data.results[0].artworkUrl100);
         setMp4(response.data.results[0].previewUrl);
@@ -43,8 +69,8 @@ export default function SearchResultPage() {
       }
     };
 
-    fetchTrackData();
-  }, [trackId]);
+    fetchMyMusic();
+  }, [objId]);
 
   const handleImageClick = (audioUrl) => {
     setSelectedAudio(audioUrl);
@@ -53,29 +79,22 @@ export default function SearchResultPage() {
     console.log(sessionStorage.getItem("user_token"));
   };
 
-  const handleSongPost = () => {
+  const handleDeletePost = () => {
+    console.log("handleDeletePost시작");
+
     axios
-      .post(
-        "http://localhost:5000/song/posting",
-        {
-          artist: artist,
-          song: song,
-          albumCover: albumCover,
-          mp4: mp4,
-          trackId: trackid,
+      .delete(`http://localhost:5000/song/deletepost/${objId}`, {
+        headers: {
+          Authorization: `${sessionStorage.getItem("user_token")}`,
         },
-        {
-          headers: {
-            Authorization: `${sessionStorage.getItem("user_token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("포스팅이 완료되었습니다.");
-        console.log(response.data);
       })
-      .catch((error) => {
-        console.log("An error occurred:", error.response);
+      .then((res) => {
+        console.log("res.data:", res.data);
+        alert(res.data.message);
+        document.location.href = "/profile";
+      })
+      .catch((err) => {
+        console.log("err:", err);
       });
   };
 
@@ -89,7 +108,24 @@ export default function SearchResultPage() {
           flexDirection: "column",
         }}
       >
-        {trackData && trackData.results && (
+        <p style={{ color: "white" }}>he1llo</p>
+
+        {/* {trackData && (
+          <AlbumImg>
+            <img
+              // src={trackData[selectedTrackIndex].albumCover}
+              style={{ width: "250px" }}
+              alt="album cover"
+              onClick={() =>
+                handleSelectedTrack(
+                  trackData[selectedTrackIndex],
+                  selectedTrackIndex
+                )
+              }
+            />
+          </AlbumImg>
+        )} */}
+        {/* {trackData && trackData.results && (
           <div className="today_music">
             <AlbumImg>
               {trackData.results[0] && (
@@ -108,19 +144,19 @@ export default function SearchResultPage() {
               </DescripBox>
             )}
           </div>
-        )}
+        )} */}
         <audio src={selectedAudio} autoPlay={isPlaying} />
-        <AddToPhotosIcon
+        <DeleteIcon
           style={{
             position: "fixed",
             top: "15px",
-            right: "130px",
+            right: "160px",
             color: "white",
           }}
           onClick={() => {
             setModalIsOpen(!modalIsOpen);
             console.log("눌림");
-            handleSongPost();
+            handleDeletePost();
           }}
         />
         <AddDeleteBtnn
@@ -129,12 +165,12 @@ export default function SearchResultPage() {
             console.log("눌림");
           }}
         >
-          Add to my playlist
+          Delete from my playlist
         </AddDeleteBtnn>
         {modalIsOpen === true
           ? modalIsOpen && (
               <NotiBox
-                noti="You have added successfully!"
+                noti="You have deleted successfully!"
                 onClose={setModalIsOpen}
               />
             )

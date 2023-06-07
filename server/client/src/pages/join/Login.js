@@ -38,6 +38,12 @@ export default function Login() {
       });
   };
 
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login_box">
       <img src={logo} style={{ width: "150px", marginBottom: "40px" }}></img>
@@ -56,6 +62,7 @@ export default function Login() {
           value={pwd}
           type="password"
           onChange={handlePwd}
+          onKeyPress={handleOnKeyPress}
         ></InputBox>
 
         <ButtonBox
