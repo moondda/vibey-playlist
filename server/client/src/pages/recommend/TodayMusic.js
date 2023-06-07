@@ -21,15 +21,18 @@ export default function TodayTemp() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [musicPlay, setMusicPlay] = useState("");
 
+  const [trackId,setTrackId] =useState('');
+
   const recommendMusic = async () => {
     try {
       const res = await axios.get("http://localhost:5000/today-music/random");
-      const { trackName, artistName, artwork, previewUrl } = res.data;
+      const { trackName, artistName, artwork, previewUrl, trackId } = res.data;
 
       setSinger(artistName);
       setTitle(trackName);
       setMusicImg(artwork);
       setMusicPlay(previewUrl);
+      setTrackId(trackId);
 
       console.log("res:", res);
       setLoading(false);
@@ -59,6 +62,7 @@ export default function TodayTemp() {
           song: title,
           albumCover: musicImg,
           mp4: musicPlay,
+          trackId: trackId
         },
         {
           headers: {
