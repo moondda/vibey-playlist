@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Profile() {
-  const [myMusic, setMyMusic] = useState([]);
+  const [myMusic, setMyMusic] = useState(null);
 
   const [mp4, setMp4] = useState("");
 
@@ -24,10 +25,11 @@ export default function Profile() {
         },
       })
       .then((res) => {
-        console.log("res.data:", res.data);
+        console.log("res.data입니다:", res.data);
         setMyMusic(res.data);
         setMp4(res.data.mp4);
         console.log("myMusic:", myMusic);
+        console.log("mp4:", mp4);
       })
       .catch((err) => {
         console.log("Error", err);
@@ -36,21 +38,7 @@ export default function Profile() {
 
   useEffect(() => {
     console.log("useEffect실행");
-    // const fetchMyFeed = async () => {
-    //   try {
-    //     const response = await axios.get("http://localhost:5000/song/mypost", {
-    //       headers: {
-    //         Authorization: `${sessionStorage.getItem("user_token")}`,
-    //       },
-    //     });
-    //     setMyMusic(response.data);
-    //     console.log("mymusic:", myMusic);
-    //     console.log("res.data:", response.data);
-    //   } catch (err) {
-    //     console.error("err:", err);
-    //   }
-    // };
-    // fetchMyFeed();
+
     viewMyFeed();
   }, []);
 
