@@ -9,6 +9,7 @@ const storage = new Storage({
 const bucket = storage.bucket("vibey"); // 구글 클라우드 스토리지 버킷 이름 입력
 
 module.exports = {
+
   check: async (req, res) => {
     try {
       const token = req.headers.authorization;
@@ -33,6 +34,7 @@ module.exports = {
       });
     }
   },
+
 
   password: async (req, res) => {
     try {
@@ -116,10 +118,12 @@ module.exports = {
       const gcsFileName = Date.now() + "_" + file.originalname;
       const gcsFilePath = `profileImg/${gcsFileName}`;
 
+
       const uploadOptions = {
         destination: gcsFilePath,
         public: true,
       };
+
 
       // 이미지를 Google Cloud Storage에 업로드
       await bucket.upload(file.path, uploadOptions);
