@@ -5,6 +5,7 @@ import pfImg from "../../assets/profileImg.jpg";
 import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+// import User from "../../../../models/User";
 
 //이미지, 닉네임, 한줄소개 컴포넌트
 
@@ -18,37 +19,44 @@ const Descript = (props) => {
   const location = useLocation();
   const nickname = location.pathname.split("/")[2];
 
+  const [userData, setUserData] = useState([]);
+
   const viewUserInfo = async (nickname) => {
     try {
-      if(nickname){
-      const response = await axios.get(`http://localhost:5000/user/info/${nickname}`);
-      const data = response.data;
-      console.log("res.data:", data);
-      setProfileName(data.nickname);
-      setBio(data.bio);
-      setCountFeed(data.countPost);
-      setCountFollower(data.countFollowers);
-      setCountFollowing(data.countFollowing); }
-      else {
+      if (nickname) {
+        const response = await axios.get(
+          `http://localhost:5000/user/info/${nickname}`
+        );
+        const data = response.data;
+        console.log("res.data:", data);
+        setImg(data.ProfileImg);
+        setProfileName(data.nickname);
+        setBio(data.bio);
+        setCountFeed(data.countPost);
+        setCountFollower(data.countFollowers);
+        setCountFollowing(data.countFollowing);
+        setUserData(data);
+      } else {
         const res = await axios
-        .get("http://localhost:5000/user/info", {
-          headers: {
-            Authorization: `${sessionStorage.getItem("user_token")}`,
-          },
-        })
-        .then((res) => {
-          const data = res.data;
-          console.log("res.data:", data);
-          setProfileName(data.nickname);
-          setBio(data.bio);
-          setCountFeed(data.countPost);
-          setCountFollower(data.countFollowers);
-          setCountFollowing(data.countFollowing);
-        })
-        .catch((err) => {
-          console.log("Error", err);
-        });
-
+          .get("http://localhost:5000/user/info", {
+            headers: {
+              Authorization: `${sessionStorage.getItem("user_token")}`,
+            },
+          })
+          .then((res) => {
+            const data = res.data;
+            console.log("res.data:", data);
+            setImg(data.ProfileImg);
+            setProfileName(data.nickname);
+            setBio(data.bio);
+            setCountFeed(data.countPost);
+            setCountFollower(data.countFollowers);
+            setCountFollowing(data.countFollowing);
+            setUserData(data);
+          })
+          .catch((err) => {
+            console.log("Error", err);
+          });
       }
     } catch (error) {
       console.log("Error", error);
@@ -65,12 +73,14 @@ const Descript = (props) => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProfileImg>
           <img
-            src={pfImg}
+            src={userData.profileImg}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ProfileImg>
         <ProfileIntro>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }}>{profileName}</p>
+          <p style={{ fontSize: "20px", fontWeight: "bold", color: "#ffffff" }}>
+            {profileName}
+          </p>
           <p style={{ fontSize: "12px", color: "#eee" }}>{bio}</p>
           <p style={{ fontSize: "12px", color: "#eee" }}>
             email : dge3179@ajou.ac.kr

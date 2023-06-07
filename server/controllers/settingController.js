@@ -105,7 +105,8 @@ module.exports = {
 
   profileImg: async (req, res) => {
     const file = req.file;
-    const userLogged = req.cookies.x_auth;
+    // const userLogged = req.cookies.x_auth;
+    const userLogged = req.headers.authorization;
 
     if (!file || !userLogged) {
       return res.status(400).send("Missing file or user");
@@ -127,7 +128,7 @@ module.exports = {
 
       // MongoDB에 이미지 URL 업데이트
       await User.updateOne(
-        { token: req.cookies.x_auth },
+        { token: req.headers.authorization },
         { $set: { profileImg: imageUrl } }
       );
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const PwdEdit = (props) => {
   const [confirmPwd, setConfirmPwd] = useState("");
@@ -11,6 +12,8 @@ const PwdEdit = (props) => {
   const [rechangedPwd, setRechangedPwd] = useState("");
 
   const [notAllow, setNotAllow] = useState(true);
+
+  const navigate = useNavigate();
 
   const checkPwd = (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -69,6 +72,7 @@ const PwdEdit = (props) => {
             alert(res.data.message);
             console.log(res.data.message);
             setChangedPwdValid(true);
+            navigate("/profile");
           } else {
             console.log(res.data.message);
             alert(res.data.message);
