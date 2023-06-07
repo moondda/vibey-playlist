@@ -79,13 +79,13 @@ module.exports = {
   },
 
   deletePost: async (req, res) => {
-    const postId = req.params.id; // 지우고자 하는 포스트의 ID
+    const trackId = req.params.trackId; // 지우고자 하는 포스트의 ID
     const userId = req.headers.authorization; // 요청을 보낸 사용자의 ID (예: 토큰에서 추출)
     const id = await decode(userId);
 
     try {
-      // 포스트 조회
-      const post = await Post.findById(postId);
+      // 요청한 사용자가 작성한 포스트 중에서 trackId가 일치하는 포스트 조회
+      const post = await Post.findOne({ postedBy: id, trackId: trackId  });
 
       if (!post) {
         return res.status(404).json({ error: "포스트를 찾을 수 없습니다." });
@@ -97,6 +97,9 @@ module.exports = {
           .status(403)
           .json({ error: "포스트를 삭제할 권한이 없습니다." });
       }
+
+// 찾은 포스트의 objectId 가져오기
+      const postId = post._id;
 
       // 포스트 삭제
       await Post.deleteOne({ _id: postId });

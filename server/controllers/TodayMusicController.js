@@ -45,6 +45,7 @@ module.exports = {
         artistName,
         artwork,
         previewUrl,
+        trackId,
       });
     } catch (error) {
       console.error("Error:", error);

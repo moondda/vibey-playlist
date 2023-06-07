@@ -63,6 +63,7 @@ export default function SearchResultPage() {
           albumCover: albumCover,
           mp4: mp4,
           trackId: trackid,
+          //postedBy도 날라감
         },
         {
           headers: {
@@ -72,6 +73,24 @@ export default function SearchResultPage() {
       )
       .then((response) => {
         console.log("포스팅이 완료되었습니다.");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
+
+  const handleSongDelete = () => {
+    axios
+      .delete(
+        `http://localhost:5000/song/deletepost/${trackId}`, {
+          headers: {
+            Authorization: `${sessionStorage.getItem("user_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("포스팅이 삭제되었습니다.");
         console.log(response.data);
       })
       .catch((error) => {
@@ -131,6 +150,16 @@ export default function SearchResultPage() {
         >
           Add to my playlist
         </AddDeleteBtnn>
+
+        <AddDeleteBtn
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            console.log("눌림");
+            handleSongDelete();
+          }}
+        >
+          Delete from my playlist
+        </AddDeleteBtn>
         {modalIsOpen === true
           ? modalIsOpen && (
               <NotiBox
@@ -177,5 +206,15 @@ const AddDeleteBtnn = styled.button`
   margin: 18px 13px 18px 13px;
   right: 0;
   top: 0;
+  position: fixed;
+`;
+
+const AddDeleteBtn = styled.button`
+  background-color: #252525;
+  border: none;
+  color: white;
+  margin: 18px 13px 18px 13px;
+  right: 0;
+  top: 30px;
   position: fixed;
 `;
