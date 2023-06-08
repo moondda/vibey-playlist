@@ -43,7 +43,14 @@ export default function UserFollowing() {
             return (
               <div style={{ margin: "0 auto" }}>
                 <ProfileImg key={index}>
-                  <img src={users.profileImage} style={{ width: "100px" }} />
+                  <img
+                    src={users.profileImage}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
                 </ProfileImg>
                 <p style={{ color: "#ffffff" }}>{users.nickname}</p>
               </div>

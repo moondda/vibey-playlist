@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NotiBox from "../../components/notification/NotiBox";
 import styled from "styled-components";
@@ -25,6 +25,8 @@ export default function SearchResultPage() {
   const [albumCover, setAlbumCover] = useState("");
   const [mp4, setMp4] = useState("");
   const [trackid, setTrackid] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTrackData = async () => {
@@ -160,7 +162,8 @@ export default function SearchResultPage() {
           onClick={() => {
             setModalIsOpen(!modalIsOpen);
             console.log("눌림");
-            handleSongPost();
+            handleSongDelete();
+            navigate("/profile");
           }}
         />
         <AddDeleteBtn
@@ -168,6 +171,7 @@ export default function SearchResultPage() {
             setModalIsOpen(!modalIsOpen);
             console.log("눌림");
             handleSongDelete();
+            navigate("/profile");
           }}
         >
           Delete from my playlist
