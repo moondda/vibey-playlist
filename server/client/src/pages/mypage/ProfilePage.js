@@ -6,11 +6,13 @@ import Title from "../../components/Title";
 import FootBar from "../../components/footer/FootBar";
 import SearchBar from "../../components/Search";
 import FindUser from "../user/FindUser";
+import LogOut from "../join/Logout";
 
 export default function ProfilePage() {
   return (
     <div className="App">
       <Title title="프로필" />
+      <LogOut />
       <FindUser />
       <Descript />
       <Profile />

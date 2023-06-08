@@ -70,7 +70,7 @@ export default function Profile() {
       style={{
         width: "100%",
         position: "absolute",
-        top: "440px",
+        top: "430px",
       }}
     >
       <GridBox>
@@ -102,7 +102,7 @@ const GridBox = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-  max-height: 400px;
+  max-height: 340px;
   overflow-y: auto;
   /* justify-content: center; */
   /* align-items: center; */

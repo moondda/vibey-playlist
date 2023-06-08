@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -17,6 +18,8 @@ export default function SignUp() {
   const [emailValid, setEmailValid] = useState(false);
 
   const [notAllow, setNotAllow] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleName = (e) => {
     const regexName = /^[ㄱ-ㅎ가-힣a-z0-9-_]{4,10}$/;
@@ -110,9 +113,13 @@ export default function SignUp() {
     if (regexPwd.test(pwd)) {
       setPwdValid(true);
       console.log("정규표현식 일치");
+      alert("정규표현식이 일치합니다.");
     } else {
       setPwdValid(false);
       console.log("정규표현식 불일치");
+      alert(
+        "비밀번호는 8~16자로 대문자, 소문자, 숫자, 특수문자가 필수로 입력되어야 합니다."
+      );
     }
   };
 
@@ -124,9 +131,11 @@ export default function SignUp() {
     if (pwd == configPwd) {
       setConfigPwdValid(true);
       console.log("비밀번호 확인 완료");
+      alert("입력하신 비밀번호와 일치합니다.");
     } else {
       setConfigPwdValid(false);
       console.log("입력하신 비밀번호와 일치하지 않습니다.");
+      alert("입력하신 비밀번호와 일치하지 않습니다.");
     }
   };
 
@@ -195,6 +204,7 @@ export default function SignUp() {
         console.log("회원가입이 완료되었습니다.");
         alert("회원가입이 완료되었습니다.");
         console.log(response.data);
+        navigate("/auth/login");
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -303,6 +313,7 @@ const InputField = styled.input`
   align-items: center;
   display: block;
   /* margin: 0 auto; */
+  outline: none;
 `;
 
 const InputFieldWrapper = styled.div`

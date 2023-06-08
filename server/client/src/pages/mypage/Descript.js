@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 // import User from "../../../../models/User";
+import basicImg from "../../assets/logo_vibey.png";
 
 //이미지, 닉네임, 한줄소개 컴포넌트
 
@@ -18,6 +19,7 @@ const Descript = (props) => {
   const [img, setImg] = useState("");
   const location = useLocation();
   const nickname = location.pathname.split("/")[2];
+  const [pfImg, setPfImg] = useState(basicImg);
 
   const [followStatus, setFollowStatus] = useState(false);
 
@@ -40,6 +42,7 @@ const Descript = (props) => {
         setCountFollower(data.countFollowers);
         setCountFollowing(data.countFollowing);
         setUserData(data);
+        // setPfImg(data.profileImage);
         setUserId(data.objectId);
       } else {
         const res = await axios
@@ -55,6 +58,7 @@ const Descript = (props) => {
             setProfileName(data.nickname);
             setBio(data.bio);
             setCountFeed(data.countPost);
+            // setPfImg(data.profileImage);
             setCountFollower(data.countFollowers);
             setCountFollowing(data.countFollowing);
             setUserData(data);
@@ -104,18 +108,17 @@ const Descript = (props) => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProfileImg>
           <img
-            src={userData.profileImg}
+            src={userData.profileImg || pfImg}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ProfileImg>
+
         <ProfileIntro>
           <p style={{ fontSize: "20px", fontWeight: "bold", color: "#ffffff" }}>
             {profileName}
           </p>
           <p style={{ fontSize: "12px", color: "#eee" }}>{bio}</p>
-          <p style={{ fontSize: "12px", color: "#eee" }}>
-            email : dge3179@ajou.ac.kr
-          </p>
+          {/* <p style={{ fontSize: "12px", color: "#eee" }}>helloworld</p> */}
           <button onClick={actfollow} style={{ fontWeight: "700" }}>
             {followStatus ? "언팔로우" : "팔로우"}
           </button>
@@ -167,17 +170,18 @@ const DescriptContainer = styled.div`
 
 const ProfileIntro = styled.div`
   /* border: 1px solid yellow; */
-  margin-left: 15px;
+  margin-left: 40px;
   margin-right: 15px;
   text-align: left;
 `;
 
 const ProfileImg = styled.div`
-  width: 105px;
-  height: 105px;
+  width: 120px;
+  height: 120px;
   border-radius: 70%;
   overflow: hidden;
   margin: 10px;
+  /* margin-right: 50px; */
   /* border: 1px solid red; */
 `;
 
@@ -185,7 +189,7 @@ const FollowBox = styled.div`
   /* border: 1px solid red; */
   display: flex;
   justify-content: space-around;
-  margin: 20px;
+  margin: 7px;
 `;
 
 const FollowText = styled.div`
