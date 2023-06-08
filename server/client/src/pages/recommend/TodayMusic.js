@@ -21,7 +21,7 @@ export default function TodayTemp() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [musicPlay, setMusicPlay] = useState("");
 
-  const [trackId,setTrackId] =useState('');
+  const [trackId, setTrackId] = useState("");
 
   const recommendMusic = async () => {
     try {
@@ -62,7 +62,7 @@ export default function TodayTemp() {
           song: title,
           albumCover: musicImg,
           mp4: musicPlay,
-          trackId: trackId
+          trackId: trackId,
         },
         {
           headers: {
@@ -127,27 +127,29 @@ export default function TodayTemp() {
           </div>
         )}
         <audio src={selectedAudio} autoPlay={isPlaying} />
-        <AddToPhotosIcon
-          style={{
-            position: "fixed",
-            top: "15px",
-            right: "130px",
-            color: "white",
-          }}
-          onClick={() => {
-            setModalIsOpen(!modalIsOpen);
-            console.log("눌림");
-            handleSongPost();
-          }}
-        />
-        <AddDeleteBtnn
-          onClick={() => {
-            setModalIsOpen(!modalIsOpen);
-            console.log("눌림");
-          }}
-        >
-          Add to my playlist
-        </AddDeleteBtnn>
+        <div style={{ position: "absolute", top: "70px" }}>
+          <AddToPhotosIcon
+            style={{
+              position: "fixed",
+              top: "50px",
+              right: "130px",
+              color: "white",
+            }}
+            onClick={() => {
+              setModalIsOpen(!modalIsOpen);
+              console.log("눌림");
+              handleSongPost();
+            }}
+          />
+          <AddDeleteBtnn
+            onClick={() => {
+              setModalIsOpen(!modalIsOpen);
+              console.log("눌림");
+            }}
+          >
+            Add to my playlist
+          </AddDeleteBtnn>
+        </div>
         {modalIsOpen === true
           ? modalIsOpen && (
               <NotiBox
@@ -215,6 +217,6 @@ const AddDeleteBtnn = styled.button`
   color: white;
   margin: 18px 13px 18px 13px;
   right: 0;
-  top: 0;
+  top: 35px;
   position: fixed;
 `;

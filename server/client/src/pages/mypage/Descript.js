@@ -166,12 +166,14 @@ const DescriptContainer = styled.div`
   position: absolute;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const ProfileIntro = styled.div`
   /* border: 1px solid yellow; */
-  margin-left: 40px;
-  margin-right: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
   text-align: left;
 `;
 

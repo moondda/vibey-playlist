@@ -130,32 +130,34 @@ export default function SearchResultPage() {
           </div>
         )}
         <audio src={selectedAudio} autoPlay={isPlaying} />
-        <AddToPhotosIcon
-          style={{
-            position: "fixed",
-            top: "15px",
-            right: "130px",
-            color: "white",
-          }}
-          onClick={() => {
-            setModalIsOpen(!modalIsOpen);
-            console.log("눌림");
-            handleSongPost();
-          }}
-        />
-        <AddDeleteBtnn
-          onClick={() => {
-            setModalIsOpen(!modalIsOpen);
-            console.log("눌림");
-          }}
-        >
-          Add to my playlist
-        </AddDeleteBtnn>
+        <div style={{ position: "absolute", top: "70px" }}>
+          <AddToPhotosIcon
+            style={{
+              position: "fixed",
+              top: "50px",
+              right: "130px",
+              color: "white",
+            }}
+            onClick={() => {
+              setModalIsOpen(!modalIsOpen);
+              console.log("눌림");
+              handleSongPost();
+            }}
+          />
+          <AddDeleteBtnn
+            onClick={() => {
+              setModalIsOpen(!modalIsOpen);
+              console.log("눌림");
+            }}
+          >
+            Add to my playlist
+          </AddDeleteBtnn>
+        </div>
 
         <DeleteIcon
           style={{
             position: "fixed",
-            top: "45px",
+            bottom: "73px",
             right: "160px",
             color: "white",
           }}
@@ -166,7 +168,7 @@ export default function SearchResultPage() {
             navigate("/profile");
           }}
         />
-        <AddDeleteBtn
+        <DeleteBtn
           onClick={() => {
             setModalIsOpen(!modalIsOpen);
             console.log("눌림");
@@ -175,7 +177,7 @@ export default function SearchResultPage() {
           }}
         >
           Delete from my playlist
-        </AddDeleteBtn>
+        </DeleteBtn>
         {modalIsOpen === true
           ? modalIsOpen && (
               <NotiBox
@@ -221,7 +223,7 @@ const AddDeleteBtnn = styled.button`
   color: white;
   margin: 18px 13px 18px 13px;
   right: 0;
-  top: 0;
+  top: 35px;
   position: fixed;
 `;
 
@@ -232,5 +234,15 @@ const AddDeleteBtn = styled.button`
   margin: 18px 13px 18px 13px;
   right: 0;
   top: 30px;
+  position: fixed;
+`;
+
+const DeleteBtn = styled.button`
+  background-color: #252525;
+  border: none;
+  color: white;
+  margin: 18px 13px 18px 13px;
+  right: 0;
+  bottom: 58px;
   position: fixed;
 `;
