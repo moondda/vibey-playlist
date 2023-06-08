@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import basicImg from "../../assets/logo_vibey.png";
 
 export default function UserFollowing() {
   const [userNick, setUserNick] = useState("");
-  const [userImg, setUserImg] = useState("");
+  const [userImg, setUserImg] = useState(basicImg);
 
   const [followingList, setFollowingList] = useState([]);
 
@@ -44,7 +45,7 @@ export default function UserFollowing() {
               <div style={{ margin: "0 auto" }}>
                 <ProfileImg key={index}>
                   <img
-                    src={users.profileImage}
+                    src={users.profileImage || userImg}
                     style={{
                       width: "100%",
                       height: "100%",
